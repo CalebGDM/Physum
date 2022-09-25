@@ -1,9 +1,9 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text } from "react-native";
 import React from "react";
-import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
 import Colors from "../constants/Colors";
 import { NormalText } from "../constants/Texts";
-import useColorScheme from "../../hooks/useColorScheme";
+import { getTheme } from "../components/Themed";
 
 const TabBarIcon = (props: {
   name: React.ComponentProps<typeof FontAwesome>["name"];
@@ -11,7 +11,7 @@ const TabBarIcon = (props: {
   focused: boolean;
   title: string;
 }) => {
-    const colorScheme = useColorScheme()
+    const theme = getTheme()
   return props.focused ? (
     <>
     <View style={{width:60, height:3, backgroundColor: props.color, marginBottom: 15, marginTop: -2}}></View>
@@ -19,7 +19,7 @@ const TabBarIcon = (props: {
       </>
    
   ) : (
-    <Text style={[NormalText.Bold, {color: Colors[colorScheme].neutral[400], marginTop: 15}]}>{props.title}</Text>
+    <Text style={[NormalText.Bold, {color: Colors[theme].neutral[400], marginTop: 15}]}>{props.title}</Text>
   );
 };
 
