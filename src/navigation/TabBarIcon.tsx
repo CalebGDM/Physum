@@ -14,7 +14,7 @@ const TabBarIcon = (props: {
     const colorScheme = useColorScheme()
   return props.focused ? (
     <>
-    <View style={{width:60, height:3, backgroundColor: props.color, marginBottom: 15}}></View>
+    <View style={{width:60, height:3, backgroundColor: props.color, marginBottom: 15, marginTop: -2}}></View>
       <FontAwesome size={40} style={{ marginBottom: -3, marginTop: -9 }} {...props} />
       </>
    
