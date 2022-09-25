@@ -16,6 +16,10 @@ export default function useCachedResources() {
         await Font.loadAsync({
           ...FontAwesome.font,
           'space-mono': require('../assets/fonts/SpaceMono-Regular.ttf'),
+          'nunito-regular': require('../assets/fonts/Nunito-Regular.ttf'),
+          'nunito-medium': require('../assets/fonts/Nunito-Medium.ttf'),
+          'nunito-bold': require('../assets/fonts/Nunito-Bold.ttf'),
+          'fredoka': require('../assets/fonts/Fredoka-Medium.ttf'),
         });
       } catch (e) {
         // We might want to provide this error information to an error reporting service
