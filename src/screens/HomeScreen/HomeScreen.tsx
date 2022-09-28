@@ -17,11 +17,11 @@ import userLessons from '../../../assets/data/userLessons'
 const HomeScreen = () => {
   const theme = getTheme()
   return (
-    <View style={{paddingHorizontal: 15}}>
+    <View style={{paddingHorizontal: 15, paddingVertical: 20}}>
 
       {/* TopLessonPewviewList */}
       <FlatList
-        style={{marginVertical: 20}}
+        style={{marginBottom: 20}}
         data={lessons}
         renderItem={({item}) => <LessonPreview lesson={item}/>}
         horizontal={true}
