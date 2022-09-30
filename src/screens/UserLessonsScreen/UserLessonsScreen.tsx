@@ -1,23 +1,21 @@
 import { View, Text, FlatList } from 'react-native'
 import React from 'react'
-import Lesson from '../../components/Lesson'
-import lessons from '../../../assets/data/lessons'
+import userLessons from '../../../assets/data/userLessons'
+import UserLessons from '../../components/UserLessons'
 import { getTheme } from '../../components/Themed'
 import { styles } from '../../constants/GeneralStyles'
 import Colors from '../../constants/Colors'
 
-const LessonsScreen = () => {
+const UserLessonsScreen = () => {
   const theme = getTheme()
   return (
     <View style={[styles.screen, {backgroundColor: Colors[theme].background}]}>
-        <FlatList
-            data={lessons}
-            numColumns={2}
-            renderItem={({item}) => <Lesson lesson={item}/>}
-        />
-      
+      <FlatList
+        data={userLessons}
+        renderItem={({item}) => <UserLessons userLesson={item}/>}
+      />
     </View>
   )
 }
 
-export default LessonsScreen
+export default UserLessonsScreen
