@@ -12,3 +12,11 @@ type UserLesson = {
     imageUri: string,
     progress: number,
 }
+
+type Topic = {
+    id: string,
+    title: string,
+    imageUri: string,
+    level: number,
+    progress: number,
+}

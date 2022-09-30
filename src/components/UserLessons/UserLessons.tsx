@@ -21,9 +21,9 @@ const UserLessons = ({userLesson}: UserLessonsNode) => {
             <Text style={[Title.Item, {color: Colors[theme].neutral[900]}]} numberOfLines={1}>{userLesson.lessonName}</Text>
             <View style={styles.container}>
                 <View style={[styles.progressBar, {backgroundColor: Colors[theme].neutral[100]}]}>
-                    <View style={[styles.progress, {backgroundColor: Colors[theme].secondary[400], width: (userLesson.progress * 150)/100}]}></View>
+                    <View style={[styles.progress, {backgroundColor: Colors[theme].secondary[400], width: (userLesson.progress * 150)}]}></View>
                 </View>
-                <Text style={[NormalText.Bold, {color: Colors[theme].neutral[500]}]}>{userLesson.progress}%</Text>
+                <Text style={[NormalText.Bold, {color: Colors[theme].neutral[500]}]}>{userLesson.progress * 100}%</Text>
             </View>
         </View>
       
