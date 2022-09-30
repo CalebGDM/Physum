@@ -4,6 +4,7 @@ import { Title } from "../../constants/Texts";
 import Colors from "../../constants/Colors";
 import { FontAwesome } from "@expo/vector-icons";
 import { getTheme } from "../Themed";
+import { useNavigation } from "@react-navigation/native";
 
 interface SectionSignPops {
   label: string;
@@ -12,6 +13,12 @@ interface SectionSignPops {
 
 const SectionSign = (props: SectionSignPops) => {
   const theme = getTheme();
+  const navigation = useNavigation();
+  
+  const onMoreButtonPressed = () => {
+    navigation.navigate(props.screen)
+  }
+  
   return (
     <View style={[styles.container, {marginBottom: 20}]}>
       <Text style={[Title.Secondary, { color: Colors[theme].neutral[900] }]}>
@@ -19,7 +26,7 @@ const SectionSign = (props: SectionSignPops) => {
       </Text>
       {props.screen ? (
         <>
-          <TouchableOpacity style={styles.container}>
+          <TouchableOpacity style={styles.container} onPress={onMoreButtonPressed}>
             
             <FontAwesome
               style={styles.icon}
