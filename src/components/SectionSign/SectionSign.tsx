@@ -8,7 +8,7 @@ import { useNavigation } from "@react-navigation/native";
 
 interface SectionSignPops {
   label: string;
-  screen?: string;
+  screen?: undefined;
 }
 
 const SectionSign = (props: SectionSignPops) => {
@@ -16,7 +16,7 @@ const SectionSign = (props: SectionSignPops) => {
   const navigation = useNavigation();
   
   const onMoreButtonPressed = () => {
-    navigation.navigate(props.screen)
+    navigation.navigate('LessonsStack',{screen: props.screen, initial: false})
   }
   
   return (

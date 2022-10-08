@@ -28,7 +28,7 @@ const HomeScreen = () => {
       />
 
       {/* Tus Lecciones */}
-      <SectionSign label='Tus lecciones' screen='UserLessons'/>
+      <SectionSign label='Tus lecciones' screen={'UserLessons'}/>
       <FlatList
         data={userLessons}
         renderItem={({item}) => <UserLessons userLesson={item}/>}

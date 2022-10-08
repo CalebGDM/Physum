@@ -12,7 +12,7 @@ const LessonPreview = ({lesson}: LessonPreviewNode) => {
   const navigation = useNavigation()
 
   const onLessonPressed = () => {
-    navigation.navigate('Topics')
+    navigation.navigate('LessonsStack',{screen: 'Topics', initial: false})
   }
   return (
     <TouchableOpacity style={[styles.container, {backgroundColor: lesson.color}]} onPress={onLessonPressed}>
