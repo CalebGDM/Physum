@@ -8,7 +8,7 @@ import SectionSign from '../../components/SectionSign'
 import FooterList from '../../components/FooterList'
 import UserLessons from '../../components/UserLessons'
 import userLessons from '../../../assets/data/userLessons'
-import { styles } from '../../constants/GeneralStyles'
+import { GStyles, styles } from '../../constants/GeneralStyles'
 
 
 
@@ -16,7 +16,7 @@ import { styles } from '../../constants/GeneralStyles'
 const HomeScreen = () => {
   const theme = getTheme()
   return (
-    <View style={[styles.screen, {backgroundColor: Colors[theme].background}]}>
+    <View style={[GStyles.screen, {backgroundColor: Colors[theme].background}]}>
 
       {/* TopLessonPewviewList */}
       <FlatList

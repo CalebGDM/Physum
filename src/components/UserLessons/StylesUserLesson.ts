@@ -22,15 +22,5 @@ export const styles = StyleSheet.create({
         aspectRatio: 1,
         resizeMode: 'contain'
     },
-    progressBar: {
-        width: 150,
-        height: 20,
-        borderRadius: 20,
-        marginRight: 10,
-    },
-    progress:{
-        height: 20,
-        borderRadius: 20,
-        marginRight: 10,
-    }
+    
 })

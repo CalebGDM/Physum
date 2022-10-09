@@ -40,4 +40,5 @@ export type LessonStackParamList = {
   UserLessons: undefined;
   Topics: undefined;
   Topic: {id: string};
+  Quiz: {id: string};
 }

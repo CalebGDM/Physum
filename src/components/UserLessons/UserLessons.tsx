@@ -4,6 +4,7 @@ import { styles } from './StylesUserLesson'
 import Colors from '../../constants/Colors'
 import { getTheme } from '../Themed'
 import { NormalText, Title } from '../../constants/Texts'
+import ProgressBar from '../ProgressBar'
 
 
 interface UserLessonsNode {
@@ -20,9 +21,7 @@ const UserLessons = ({userLesson}: UserLessonsNode) => {
         <View>
             <Text style={[Title.Item, {color: Colors[theme].neutral[900]}]} numberOfLines={1}>{userLesson.lessonName}</Text>
             <View style={styles.container}>
-                <View style={[styles.progressBar, {backgroundColor: Colors[theme].neutral[100]}]}>
-                    <View style={[styles.progress, {backgroundColor: Colors[theme].secondary[400], width: (userLesson.progress * 150)}]}></View>
-                </View>
+                <ProgressBar progress={userLesson.progress} style={{width: 150}}/>
                 <Text style={[NormalText.Bold, {color: Colors[theme].neutral[500]}]}>{userLesson.progress * 100}%</Text>
             </View>
         </View>

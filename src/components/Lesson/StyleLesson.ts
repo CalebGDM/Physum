@@ -1,7 +1,9 @@
-import {StyleSheet} from 'react-native'
+import {Dimensions, StyleSheet} from 'react-native'
+const width = Dimensions.get('window').width
 export const styles = StyleSheet.create({
     container: {
-        minWidth: 70,
+        
+        maxWidth: width/2,
         alignSelf: 'flex-start',
         height: 230,
         borderRadius: 20,

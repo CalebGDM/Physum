@@ -3,13 +3,13 @@ import React from 'react'
 import Lesson from '../../components/Lesson'
 import lessons from '../../../assets/data/lessons'
 import { getTheme } from '../../components/Themed'
-import { styles } from '../../constants/GeneralStyles'
+import { GStyles, styles } from '../../constants/GeneralStyles'
 import Colors from '../../constants/Colors'
 
 const LessonsScreen = () => {
   const theme = getTheme()
   return (
-    <View style={[styles.screen, {backgroundColor: Colors[theme].background}]}>
+    <View style={[GStyles.screen, {backgroundColor: Colors[theme].background}]}>
         <FlatList
             data={lessons}
             numColumns={2}

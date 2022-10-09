@@ -1,8 +1,10 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
+
+const width = Dimensions.get('window').width
 
 export const styles = StyleSheet.create({
     container: {
-        width: 230,
+        width: width/1.7,
         aspectRatio: 8/10,
         borderRadius: 20,
         paddingVertical: 20,
