@@ -11,12 +11,14 @@ import topicInfo from "../../../assets/data/topicInfo";
 import Markdown from "react-native-markdown-display";
 import { getCurrTheme, MarkdownStyles } from "../../constants/MarkdownStyles";
 import CustomButtom from "../../components/CustomButtom";
+import useApplyHeaderWorkaround from "../../../hooks/useAplyHeaderWorks";
 
 const TopicScreen = () => {
   const route = useRoute();
   const navigation = useNavigation();
   const topicId = route?.params?.id;
   const topic = topics.find((t) => t.id === topicId);
+  useApplyHeaderWorkaround(navigation.setOptions)
 
   const theme = getTheme();
   const onGoToQuizPressed = () => {

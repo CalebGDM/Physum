@@ -5,7 +5,7 @@ import TopicNodesRow from '../../components/TopicNodesRow'
 import topics from '../../../assets/data/topics'
 import { getCurrentActiveLevel, groupByLevels } from '../../utils/Topics'
 import { getTheme } from '../../components/Themed'
-import { GStyles, styles } from '../../constants/GeneralStyles'
+import { GStyles } from '../../constants/GeneralStyles'
 import Colors from '../../constants/Colors'
 
 

@@ -17,6 +17,9 @@ export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   Modal: undefined;
   NotFound: undefined;
+  Topic: {id: string};
+  Quiz: {id: string};
+  EndQuiz: {numberOfQuestions: number; numberOfCorrectAnswers: number};
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<
@@ -28,6 +31,7 @@ export type RootTabParamList = {
   HomeScreen: undefined;
   LessonsStack: undefined;
   TabTwo: undefined;
+  
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<
@@ -39,6 +43,5 @@ export type LessonStackParamList = {
   Lessons: undefined;
   UserLessons: undefined;
   Topics: undefined;
-  Topic: {id: string};
-  Quiz: {id: string};
+  
 }
