@@ -9,12 +9,16 @@ import quiz from "../../../assets/data/quiz";
 import QuizAnswer from "../../components/QuizAnswer";
 import CustomButtom from "../../components/CustomButtom";
 import ProgressBar from "../../components/ProgressBar";
+import { LessonStackParamList, RootStackParamList } from "../../../types";
+import Animated, { SlideInDown, SlideOutDown } from "react-native-reanimated";
+import useApplyHeaderWorkaround from "../../../hooks/useAplyHeaderWorks";
 
-const QuizScreen = () => {
+const QuizScreen = ({navigation}: RootStackParamList<"Quiz">) => {
   const theme = getTheme();
   const [questionIndex, setQuestionIndex] = useState(0);
   const [question, setQuestion] = useState(quiz[questionIndex]);
   const [selectedAnswers, setSelectedAnswers] = useState<string[]>([]);
+  useApplyHeaderWorkaround(navigation.setOptions)
   const [answeredCorrectly, setAnswerCorrectly] = useState<boolean | undefined>(
     undefined
   );
@@ -22,7 +26,7 @@ const QuizScreen = () => {
 
   useEffect(() => {
     if(questionIndex == quiz.length){
-      Alert.alert("Quiz Terminado", `Consestaste correctamente ${numberOfCorrectAnswers} de ${quiz.length}.`)
+      navigation.navigate("EndQuiz",{numberOfQuestions: quiz.length, numberOfCorrectAnswers: numberOfCorrectAnswers} )
       return;
     }
     setQuestion(quiz[questionIndex]);
@@ -97,7 +101,9 @@ const QuizScreen = () => {
         />
       </ScrollView>
       {answeredCorrectly == true && (
-        <View
+        <Animated.View
+        entering={SlideInDown}
+        exiting={SlideOutDown}
           style={[
             styles.correctAnswerBox,
             { backgroundColor: Colors[theme].secondary[100] },
@@ -114,11 +120,13 @@ const QuizScreen = () => {
             onPress={onContinue}
             style={{ marginTop: 10, marginBottom: 20 }}
           />
-        </View>
+        </Animated.View>
       )}
 
       {answeredCorrectly == false && (
-        <View
+        <Animated.View
+          entering={SlideInDown}
+          exiting={SlideOutDown}
           style={[
             styles.correctAnswerBox,
             { backgroundColor: Colors[theme].tertiary[100] },
@@ -135,7 +143,7 @@ const QuizScreen = () => {
             onPress={onContinue}
             style={{ marginTop: 10, marginBottom: 20 }}
           />
-        </View>
+        </Animated.View>
       )}
     </>
   );
