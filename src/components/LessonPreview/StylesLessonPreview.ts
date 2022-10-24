@@ -8,11 +8,11 @@ export const styles = StyleSheet.create({
         aspectRatio: 8/10,
         borderRadius: 20,
         paddingVertical: 20,
-        paddingHorizontal: 20,
+        paddingHorizontal: 15,
         alignItems: 'center',
         marginRight: 30,
         justifyContent: 'space-between',
-        marginBottom: -100
+        marginBottom: width * .5
     },
     text: {
         color: 'white',

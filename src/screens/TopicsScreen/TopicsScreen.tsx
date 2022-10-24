@@ -7,14 +7,19 @@ import { getCurrentActiveLevel, groupByLevels } from '../../utils/Topics'
 import { getTheme } from '../../components/Themed'
 import { GStyles } from '../../constants/GeneralStyles'
 import Colors from '../../constants/Colors'
+import useApplyHeaderWorkaround from '../../../hooks/useAplyHeaderWorks'
+import { useNavigation } from '@react-navigation/native'
 
 
 const levels = groupByLevels(topics)
 const currentLevel = getCurrentActiveLevel(levels)
 console.log(currentLevel)
 
+
 const TopicsScreen = () => {
   const theme = getTheme()
+  const navigation = useNavigation()
+  useApplyHeaderWorkaround(navigation.setOptions)
   return (
     <View style={[GStyles.screen, {backgroundColor: Colors[theme].background}]}>
       <FlatList

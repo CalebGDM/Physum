@@ -17,6 +17,7 @@ const LessonPreview = ({lesson}: LessonPreviewNode) => {
   return (
     <TouchableOpacity style={[styles.container, {backgroundColor: lesson.color}]} onPress={onLessonPressed}>
       <Text style={[Title.Secondary, styles.text]}>{lesson.lessonName}</Text>
+      
       <Image style={styles.image} source={{uri: lesson.imageUri}}/>
     </TouchableOpacity>
   )

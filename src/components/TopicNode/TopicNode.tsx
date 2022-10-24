@@ -56,7 +56,7 @@ const TopicNode = ({ topic, isDisabled = true }: TopicProps) => {
             },
           ]}
         >
-          <Image source={{ uri: topic.imageUri }} style={styles.image} />
+          
         </View>
       </View>
       <Text
@@ -64,6 +64,7 @@ const TopicNode = ({ topic, isDisabled = true }: TopicProps) => {
       >
         {topic.title}
       </Text>
+      <Image source={{ uri: topic.imageUri }} style={styles.image} resizeMode={'contain'}/>
     </Pressable>
   );
 };

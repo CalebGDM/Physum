@@ -8,7 +8,7 @@ import SectionSign from '../../components/SectionSign'
 import FooterList from '../../components/FooterList'
 import UserLessons from '../../components/UserLessons'
 import userLessons from '../../../assets/data/userLessons'
-import { GStyles, styles } from '../../constants/GeneralStyles'
+import { GStyles } from '../../constants/GeneralStyles'
 
 
 
@@ -32,7 +32,7 @@ const HomeScreen = () => {
       <FlatList
         data={userLessons}
         renderItem={({item}) => <UserLessons userLesson={item}/>}
-
+        showsVerticalScrollIndicator={false}
       />
     </View>
   )

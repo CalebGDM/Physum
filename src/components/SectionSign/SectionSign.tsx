@@ -8,7 +8,7 @@ import { useNavigation } from "@react-navigation/native";
 
 interface SectionSignPops {
   label: string;
-  screen?: undefined;
+  screen?: string;
 }
 
 const SectionSign = (props: SectionSignPops) => {

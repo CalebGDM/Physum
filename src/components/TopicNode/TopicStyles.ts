@@ -26,9 +26,11 @@ export const styles = StyleSheet.create({
         borderWidth: 3,
     },
     image: {
-        width: '65%',
+        width: '55%',
         aspectRatio: 1,
-        resizeMode: 'contain'
+        position: 'absolute',
+        top: 20,
+        
     },
     text: {
         marginTop: 10
