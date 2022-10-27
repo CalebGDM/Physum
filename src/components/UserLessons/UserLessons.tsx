@@ -5,6 +5,7 @@ import Colors from '../../constants/Colors'
 import { getTheme } from '../Themed'
 import { NormalText, Title } from '../../constants/Texts'
 import ProgressBar from '../ProgressBar'
+import { useNavigation } from '@react-navigation/native'
 
 
 interface UserLessonsNode {
@@ -13,8 +14,12 @@ interface UserLessonsNode {
 
 const UserLessons = ({userLesson}: UserLessonsNode) => {
   const theme = getTheme()
+  const navigation = useNavigation()
+  const onUserLessonPressed = () => {
+    navigation.navigate('LessonsStack',{screen: 'Topics', initial: false})
+  }
   return (
-    <TouchableOpacity style={styles.containerMain}>
+    <TouchableOpacity style={styles.containerMain} onPress={onUserLessonPressed}>
         <View style={[styles.imageBox, {backgroundColor: userLesson.color}]}>
             <Image style={styles.image} source={{uri: userLesson.imageUri}}/>
         </View>
