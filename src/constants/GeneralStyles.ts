@@ -5,7 +5,7 @@ const height = Dimensions.get('screen').height
 export const GStyles = StyleSheet.create({
     screen:{
         flex: 1,
-        paddingHorizontal: 15, 
-        paddingTop: 20,
+        paddingHorizontal: 5, 
+        paddingTop: 10,
     }
 })
