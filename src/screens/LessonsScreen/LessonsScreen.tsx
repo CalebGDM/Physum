@@ -13,12 +13,13 @@ const LessonsScreen = () => {
   const navigation = useNavigation()
   useApplyHeaderWorkaround(navigation.setOptions)
   return (
-    <View style={[GStyles.screen, {backgroundColor: Colors[theme].background}]}>
+    <View style={[GStyles.screen, {backgroundColor: Colors[theme].background, alignItems: 'center'}]}>
         <FlatList
             data={lessons}
             numColumns={2}
             renderItem={({item}) => <Lesson lesson={item}/>}
         />
+        
       
     </View>
   )

@@ -2,17 +2,14 @@ import {Dimensions, StyleSheet} from 'react-native'
 const width = Dimensions.get('window').width
 export const styles = StyleSheet.create({
     container: {
-        
-        maxWidth: width/2,
+        maxWidth: width/1.8,
         alignSelf: 'flex-start',
-        height: 230,
         borderRadius: 20,
         paddingVertical: 20,
         paddingHorizontal: 15,
         alignItems: 'center',
         marginRight: 15,
         justifyContent: 'space-between',
-        marginBottom: 20
     },
     text: {
         color: 'white',
