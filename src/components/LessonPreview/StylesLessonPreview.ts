@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         marginRight: 30,
         justifyContent: 'space-between',
-        marginBottom: width * .5
+        marginBottom: 100,
     },
     text: {
         color: 'white',
