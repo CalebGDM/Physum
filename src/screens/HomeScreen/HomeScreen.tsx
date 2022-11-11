@@ -1,4 +1,4 @@
-import { View, FlatList} from 'react-native'
+import { View, FlatList, ScrollView} from 'react-native'
 import React from 'react'
 import { getTheme} from '../../components/Themed'
 import LessonPreview from '../../components/LessonPreview'
@@ -15,27 +15,28 @@ import { GStyles } from '../../constants/GeneralStyles'
 
 const HomeScreen = () => {
   const theme = getTheme()
-  return (
-    <View style={[GStyles.screen, {backgroundColor: Colors[theme].background}]}>
+  const lessonsToRender = lessons.slice(0,4)
 
-      {/* TopLessonPewviewList */}
-      <FlatList
-        data={lessons}
-        renderItem={({item}) => <LessonPreview lesson={item}/>}
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-        ListFooterComponent={<FooterList/>}
-      />
+return (
+  <ScrollView style={[GStyles.screen, {backgroundColor: Colors[theme].background}]} showsVerticalScrollIndicator={false}>
 
-      {/* Tus Lecciones */}
-      <SectionSign label='Tus lecciones' screen={'UserLessons'}/>
-      <FlatList
-        data={userLessons}
-        renderItem={({item}) => <UserLessons userLesson={item}/>}
-        showsVerticalScrollIndicator={false}
-      />
-    </View>
-  )
+    {/* TopLessonPewviewList */}
+    <FlatList
+      data={lessonsToRender}
+      renderItem={({item}) => <LessonPreview lesson={item}/>}
+      horizontal={true}
+      showsHorizontalScrollIndicator={false}
+      ListFooterComponent={<FooterList/>}
+    />
+
+    {/* Tus Lecciones */}
+    <SectionSign label='Tus lecciones' screen={'UserLessons'}/>
+   
+    {
+      userLessons.map((item, index) => <UserLessons userLesson={item}/>)
+    }
+  </ScrollView>
+)
 }
 
 export default HomeScreen
