@@ -4,15 +4,15 @@ const width = Dimensions.get('window').width
 
 export const styles = StyleSheet.create({
     container: {
-        width: width/1.7,
-        aspectRatio: 8/10,
+        width: width/1.6,
+        aspectRatio: 3/4,
         borderRadius: 20,
         paddingVertical: 20,
         paddingHorizontal: 15,
         alignItems: 'center',
         marginRight: 30,
         justifyContent: 'space-between',
-        marginBottom: 100,
+        marginBottom: 10,
     },
     text: {
         color: 'white',

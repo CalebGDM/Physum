@@ -2,7 +2,6 @@ import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import React from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import topics from "../../../assets/data/topics";
-import { styles } from "../../constants/GeneralStyles";
 import Colors from "../../constants/Colors";
 import { getTheme } from "../../components/Themed";
 import { Styles } from "./TopicScreenStyle";
@@ -18,17 +17,24 @@ const TopicScreen = () => {
   const navigation = useNavigation();
   const topicId = route?.params?.id;
   const topic = topics.find((t) => t.id === topicId);
-  useApplyHeaderWorkaround(navigation.setOptions)
+  useApplyHeaderWorkaround(navigation.setOptions);
 
   const theme = getTheme();
   const onGoToQuizPressed = () => {
-    navigation.navigate("Quiz", {id: '129'});
+    navigation.navigate("Quiz", { id: "129" });
   };
   return (
-    <ScrollView style={[{ backgroundColor: Colors[theme].background }]}>
+    <ScrollView
+      style={[{ backgroundColor: Colors[theme].background }]}
+      showsVerticalScrollIndicator={false}
+    >
       <View style={Styles.content}>
-        <Markdown>{topicInfo[0].info}</Markdown>
-        <CustomButtom text="Responder Quiz" color={Colors[theme].primary[500]} onPress={onGoToQuizPressed}/>
+        <Markdown style={MarkdownStyles}>{topicInfo[0].info}</Markdown>
+        <CustomButtom
+          text="Responder Quiz"
+          color={Colors[theme].primary[500]}
+          onPress={onGoToQuizPressed}
+        />
       </View>
     </ScrollView>
   );

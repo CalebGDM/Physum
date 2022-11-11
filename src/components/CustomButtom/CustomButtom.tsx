@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         justifyContent: 'center',
         alignItems: 'center',
-        marginVertical: 60
+        marginBottom: 30,
     },
 })
 

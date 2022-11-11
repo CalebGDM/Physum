@@ -1,28 +1,35 @@
-import { View, Text, FlatList } from 'react-native'
-import React from 'react'
-import Lesson from '../../components/Lesson'
-import lessons from '../../../assets/data/lessons'
-import { getTheme } from '../../components/Themed'
-import { GStyles } from '../../constants/GeneralStyles'
-import Colors from '../../constants/Colors'
-import useApplyHeaderWorkaround from '../../../hooks/useAplyHeaderWorks'
-import { useNavigation } from '@react-navigation/native'
+import { View, Text, FlatList, ScrollView, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import Lesson from "../../components/Lesson";
+import lessons from "../../../assets/data/lessons";
+import { getTheme } from "../../components/Themed";
+import { GStyles } from "../../constants/GeneralStyles";
+import Colors from "../../constants/Colors";
+import useApplyHeaderWorkaround from "../../../hooks/useAplyHeaderWorks";
+import { useNavigation } from "@react-navigation/native";
 
 const LessonsScreen = () => {
-  const theme = getTheme()
-  const navigation = useNavigation()
-  useApplyHeaderWorkaround(navigation.setOptions)
+  const theme = getTheme();
+  const navigation = useNavigation();
+  useApplyHeaderWorkaround(navigation.setOptions);
+  const [renderIndex, setRenderIndex] = useState(0)
   return (
-    <View style={[GStyles.screen, {backgroundColor: Colors[theme].background, alignItems: 'center'}]}>
-        <FlatList
-            data={lessons}
-            numColumns={2}
-            renderItem={({item}) => <Lesson lesson={item}/>}
-        />
-        
+    <View
+      style={[GStyles.screen, { backgroundColor: Colors[theme].background, alignItems: 'center'}]}
+    >
+      <FlatList
+        data={lessons}
+        renderItem={({item}) => <Lesson lesson={item}/>}
+        numColumns={2}
+        showsVerticalScrollIndicator={false}
+      />
       
     </View>
-  )
-}
+  );
+};
 
-export default LessonsScreen
+const styles = StyleSheet.create({
+  
+});
+
+export default LessonsScreen;

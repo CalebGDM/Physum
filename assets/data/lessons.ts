@@ -7,7 +7,7 @@ export default [
     },
     {
         id: '1',
-        lessonName: 'Movimiento Rectilinio Uniforme',
+        lessonName: 'Moviemiento Rectilinio Uniforme',
         color: '#FF598B',
         imageUri: 'https://cdn.pixabay.com/photo/2020/03/25/12/33/apple-4967157_960_720.png'
     },
@@ -20,6 +20,12 @@ export default [
     {
         id: '3',
         lessonName: 'Trabajo y Energia',
+        color: '#59CDFF',
+        imageUri: 'https://cdn.pixabay.com/photo/2020/03/25/12/33/apple-4967157_960_720.png'
+    },
+    {
+        id: '4',
+        lessonName: 'Energia',
         color: '#59CDFF',
         imageUri: 'https://cdn.pixabay.com/photo/2020/03/25/12/33/apple-4967157_960_720.png'
     },

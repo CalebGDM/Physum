@@ -1,4 +1,4 @@
-import { View, Text, FlatList, ScrollView, Alert } from "react-native";
+import { View, Text, FlatList, ScrollView, Alert, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { styles } from "./QuizScreenStyle";
 import { getTheme } from "../../components/Themed";
@@ -23,6 +23,7 @@ const QuizScreen = ({navigation}: RootStackParamList<"Quiz">) => {
     undefined
   );
   const [numberOfCorrectAnswers, setNumberOfCorrectAnswers] = useState(0)
+  const [questionCliked, setQuestionCliked] = useState(false)
 
   useEffect(() => {
     if(questionIndex == quiz.length){
@@ -69,15 +70,17 @@ const QuizScreen = ({navigation}: RootStackParamList<"Quiz">) => {
   return (
     <>
       <ProgressBar progress={(questionIndex / quiz.length) } style={{borderRadius: 0, height: 15, justifyContent: 'center'}}/>
-      <ScrollView
+      <View
         style={[
           GStyles.screen,
           { backgroundColor: Colors[theme].primary[500] },
         ]}
       >
-        <Text style={[Title.Secondary, { textAlign: "center" }]}>
+        <TouchableOpacity onPress={() => {setQuestionCliked(!questionCliked)}}>
+        <Text style={[Title.Secondary, { textAlign: "center" }]} numberOfLines={questionCliked == true ? 0 : 2}>
           {question.question}
         </Text>
+        </TouchableOpacity>
         {/* Opciones */}
         <FlatList
           data={question.choices}
@@ -92,14 +95,15 @@ const QuizScreen = ({navigation}: RootStackParamList<"Quiz">) => {
           numColumns={2}
           scrollEnabled={false}
         />
-
+        
         <CustomButtom
           text="Siguiente Pregunta"
           color={Colors[theme].secondary[500]}
           disabled={isButtonDisabled}
           onPress={onSubmit}
         />
-      </ScrollView>
+        </View>
+      
       {answeredCorrectly == true && (
         <Animated.View
         entering={SlideInDown}
