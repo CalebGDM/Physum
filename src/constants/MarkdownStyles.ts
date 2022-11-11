@@ -12,24 +12,35 @@ export const getCurrTheme = (props: {theme: string}) => {
 
 export const MarkdownStyles = StyleSheet.create ({
     body: {
-        
+       
     },
     heading1: {
-        color: Colors[curTheme].neutral[900]
+        fontFamily: 'nunito-bold',
+        fontSize: 40,
     },
     heading2: {
-        color: 'red'
-    },
-    heading3: {
-        color: 'red'
-    },
-    heading4: {
+        fontFamily: 'nunito-bold',
+        fontSize: 35,
         
     },
+    heading3: {
+        fontFamily: 'nunito-bold',
+        fontSize: 32,
+        
+    },
+    heading4: {
+        fontFamily: 'nunito-bold',
+        fontSize: 24,
+       
+    },
     heading5: {
+        fontFamily: 'nunito-bold',
+        fontSize: 20,
         
     },
     heading6: {
+        fontFamily: 'fredoka',
+        fontSize: 15,
         
     },
     hr: {
@@ -60,7 +71,10 @@ export const MarkdownStyles = StyleSheet.create ({
         
     },
     code_block: {
-        
+        borderColor: Colors.light.neutral[300],
+        borderWidth: 5,
+        fontFamily: 'nunito-bold',
+        color: Colors.light.neutral[500]
     },
     fence: {
         
@@ -93,6 +107,7 @@ export const MarkdownStyles = StyleSheet.create ({
         
     },	
     text: {
+        fontFamily: 'nunito-medium',
         
     },	
     textgroup: {
