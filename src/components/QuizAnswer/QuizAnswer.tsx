@@ -4,6 +4,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   TouchableOpacityProps,
+  Platform,
 } from "react-native";
 import React from "react";
 import { Title } from "../../constants/Texts";
@@ -39,8 +40,8 @@ const QuizAnswer = ({
 
 const styles = StyleSheet.create({
   container: {
-    width: "45%",
-    height: 150,
+    width: Platform.OS === 'ios' ? '43%' : '40%',
+    aspectRatio: Platform.OS === 'ios' ? 9/10 : 1,
     backgroundColor: Colors.light.background,
     borderRadius: 30,
     justifyContent: "center",
