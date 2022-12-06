@@ -13,9 +13,11 @@ import { GStyles } from '../../constants/GeneralStyles'
 
 
 
+
 const HomeScreen = () => {
   const theme = getTheme()
   const lessonsToRender = lessons.slice(0,4)
+  
 
 return (
   <ScrollView style={[GStyles.screen, {backgroundColor: Colors[theme].background}]} showsVerticalScrollIndicator={false}>
