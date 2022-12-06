@@ -11,17 +11,13 @@ const TabBarIcon = (props: {
   focused: boolean;
   title: string;
 }) => {
-    const theme = getTheme()
-  return props.focused ? (
-    <>
-    <View style={{width:60, height:3, backgroundColor: props.color, marginBottom: 15, marginTop: -2}}></View>
-      <FontAwesome size={40} style={{ marginBottom: -3, marginTop: -9 }} {...props} />
-      </>
-   
-  ) : (
-    <Text style={[NormalText.Bold, {color: Colors[theme].neutral[400], marginTop: 15}]}>{props.title}</Text>
+  const theme = getTheme();
+  return (
+    <FontAwesome
+      size={35}
+      {...props}
+    />
   );
 };
-
 
 export default TabBarIcon;
