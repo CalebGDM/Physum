@@ -40,7 +40,7 @@ const CustomButtom = ({
     >
       <Text
         style={[
-          Platform.OS == 'ios' ? Title.Secondary : Title.Section,
+          Title.Secondary ,
           {
             color: disabled
               ? Colors.light.neutral[300]

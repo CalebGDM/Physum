@@ -7,7 +7,7 @@ export const Title = StyleSheet.create({
     },
     Secondary: {
         fontFamily: 'fredoka',
-        fontSize: Platform.OS == "ios" ? 32 :  28
+        fontSize: Platform.OS == "ios" ? 32 :  25
     },
     Section: {
         fontFamily: 'fredoka',
