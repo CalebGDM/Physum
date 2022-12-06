@@ -16,9 +16,9 @@ const Lesson = ({lesson}: LessonPorps) => {
     }
   return (
     <TouchableOpacity style={[styles.container, {backgroundColor: lesson.color}]} onPress={onLessonPressed}>
-        <Text style={styles.text}>
+        <Text style={styles.text} >
         {
-            words.map((item, index) => (<Text style={[Title.Secondary]} numberOfLines={3} >{ item + '\n'}</Text>))
+            words.map((item, index) => (<Text style={[ Title.Secondary]}  >{ item + '\n'}</Text>))
         }
         </Text>
        

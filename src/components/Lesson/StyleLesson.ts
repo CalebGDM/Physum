@@ -1,8 +1,8 @@
-import {Dimensions, StyleSheet} from 'react-native'
-const width = Dimensions.get('window').width
+import {Dimensions, Platform, StyleSheet} from 'react-native'
+const width = Dimensions.get('screen').width
 export const styles = StyleSheet.create({
     container: {
-        maxWidth: width / 1.8,
+        maxWidth: Platform.OS == 'ios' ? width / 1.8 : width/2.2,
         height: 200,
         borderRadius: 20,
         paddingVertical: 20,

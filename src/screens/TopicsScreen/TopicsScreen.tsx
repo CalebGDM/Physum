@@ -24,6 +24,7 @@ const TopicsScreen = () => {
     <View style={[GStyles.screen, {backgroundColor: Colors[theme].background}]}>
       <FlatList
         data={levels}
+       
         renderItem={({item}) =>(
           <TopicNodesRow>
             {

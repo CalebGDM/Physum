@@ -15,13 +15,15 @@ const LessonsScreen = () => {
   const [renderIndex, setRenderIndex] = useState(0)
   return (
     <View
-      style={[GStyles.screen, { backgroundColor: Colors[theme].background, alignItems: 'center'}]}
+      style={[GStyles.screen, { backgroundColor: Colors[theme].background, justifyContent: 'center'}]}
     >
       <FlatList
         data={lessons}
+        horizontal={false}
         renderItem={({item}) => <Lesson lesson={item}/>}
         numColumns={2}
         showsVerticalScrollIndicator={false}
+        columnWrapperStyle={{justifyContent: 'center'}}
       />
       
     </View>
