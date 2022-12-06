@@ -11,6 +11,8 @@ import Markdown from "react-native-markdown-display";
 import { getCurrTheme, MarkdownStyles } from "../../constants/MarkdownStyles";
 import CustomButtom from "../../components/CustomButtom";
 import useApplyHeaderWorkaround from "../../../hooks/useAplyHeaderWorks";
+import SectionSign from "../../components/SectionSign";
+import ResourceItem from "../../components/ResourceItem";
 
 const TopicScreen = () => {
   const route = useRoute();
@@ -20,6 +22,7 @@ const TopicScreen = () => {
   useApplyHeaderWorkaround(navigation.setOptions);
 
   const theme = getTheme();
+  navigation.setOptions({ title: topic?.title });
   const onGoToQuizPressed = () => {
     navigation.navigate("Quiz", { id: "129" });
   };
@@ -30,6 +33,10 @@ const TopicScreen = () => {
     >
       <View style={Styles.content}>
         <Markdown style={MarkdownStyles}>{topicInfo[0].info}</Markdown>
+        <SectionSign label="Recuros extra" />
+        {topic?.resources?.map((resource, index) => (
+          <ResourceItem resource={resource} index={index} />
+        ))}
         <CustomButtom
           text="Responder Quiz"
           color={Colors[theme].primary[500]}

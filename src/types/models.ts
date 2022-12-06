@@ -19,4 +19,12 @@ type Topic = {
     imageUri: string,
     level: number,
     progress: number,
+    resources?: ResourceItem[],
+}
+
+type ResourceItem = {
+    id: string,
+    title: string,
+    url: string,
+    completed?: boolean
 }
