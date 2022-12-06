@@ -7,6 +7,7 @@ import TabBarIcon from "./TabBarIcon";
 import TabTwoScreen from "../screens/TabTwoScreen";
 import LessonsScreen from "../screens/LessonsScreen";
 import LessonsStack from "./LessonsStack";
+import UserScreen from "../screens/UserScreen";
 
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
@@ -38,11 +39,11 @@ function BottomTabNavigator() {
         })}
       />
       <BottomTab.Screen
-        name="TabTwo"
-        component={TabTwoScreen}
+        name="UserScreen"
+        component={UserScreen}
         options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color, focused }) => <TabBarIcon name="code" color={color} focused={focused} title='HomeScreen'/>,
+          title: 'UserScreen',
+          tabBarIcon: ({ color, focused }) => <TabBarIcon name="user" color={color} focused={focused} title='Usuario'/>,
         }}
       />
     </BottomTab.Navigator>
