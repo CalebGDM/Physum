@@ -10,12 +10,15 @@ import React from "react";
 import { Title } from "../../constants/Texts";
 import Colors from "../../constants/Colors";
 import { getTheme } from "../Themed";
+import { border } from "@shopify/restyle";
 
 interface CustomButtonProps {
   text: string;
   color: string;
   onPress?: () => void;
   disabled?: boolean;
+  textColor?: string;
+  outline?: boolean;
 }
 
 const CustomButtom = ({
@@ -24,6 +27,8 @@ const CustomButtom = ({
   style,
   onPress = () => {},
   disabled,
+  textColor,
+  outline,
 }: CustomButtonProps) => {
   const theme = getTheme();
   return (
@@ -31,7 +36,13 @@ const CustomButtom = ({
       style={[
         [
           styles.button,
-          { backgroundColor: disabled ? Colors.light.neutral[100] : color },
+          outline ? {
+            backgroundColor: null,
+            borderColor: color,
+            borderWidth: 3
+          }
+          :
+          { backgroundColor: disabled ? Colors.light.neutral[100] : color},
           style as any,
         ],
       ]}
@@ -40,11 +51,16 @@ const CustomButtom = ({
     >
       <Text
         style={[
-          Title.Secondary ,
+          Title.Secondary,
+          outline ?{
+            color: color
+          }:
           {
-            color: disabled
-              ? Colors.light.neutral[300]
-              : Colors[theme].primary[900],
+            color: textColor
+              ? textColor
+              : disabled
+                ? Colors.light.neutral[300]
+                : Colors[theme].primary[900],
           },
         ]}
       >
@@ -62,7 +78,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 30,
-    
   },
 });
 

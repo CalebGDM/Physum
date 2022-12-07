@@ -20,6 +20,8 @@ export type RootStackParamList = {
   Topic: {id: string};
   Quiz: {id: string};
   EndQuiz: {numberOfQuestions: number; numberOfCorrectAnswers: number};
+  Start: undefined;
+  SignUp: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<
