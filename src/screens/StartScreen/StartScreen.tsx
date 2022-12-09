@@ -1,4 +1,4 @@
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, Platform } from "react-native";
 import React from "react";
 import { GStyles } from "../../constants/GeneralStyles";
 import Colors from "../../constants/Colors";
@@ -18,7 +18,7 @@ const StartScreen = () => {
             { color: Colors.light.base.white, textAlign: "center" },
           ]}
         >
-          Descubre los secretos del mundo que te rodea
+          Aprender física nunca fué tan fácil
         </Text>
       </View>
       <CustomButtom text="Empezemos" color={Colors.light.base.white} textColor={Colors.light.primary[500]}/>
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   titleContainer:{
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 350
+    marginBottom: Platform.OS == 'ios' ? 350 : 250
   },
   image: {
     width: "100%",

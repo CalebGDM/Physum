@@ -22,6 +22,10 @@ export type RootStackParamList = {
   EndQuiz: {numberOfQuestions: number; numberOfCorrectAnswers: number};
   Start: undefined;
   SignUp: undefined;
+  SignIn: undefined;
+  ConfirmAccount: undefined;
+  ResetPasswordCode: undefined;
+  ResetPassword: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<

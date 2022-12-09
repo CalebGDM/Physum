@@ -1,4 +1,4 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity, Platform } from "react-native";
 import React from "react";
 import Colors from "../../constants/Colors";
 import CustomButtom from "../../components/CustomButtom";
@@ -6,20 +6,19 @@ import { NormalText, Title } from "../../constants/Texts";
 import bgImage from "../../../assets/images/BgImage.png";
 import FormInput from "../../components/FormInput";
 
-const SignUpScreen = () => {
+const SignInScreen = () => {
   return (
     <View style={styles.container}>
       <Image style={styles.image} source={bgImage} />
-      <View style={styles.titleContainer}>
-        <Text style={[Title.Principal, styles.title]}>PHYSUM</Text>
-      </View>
+     
       <View style={styles.form}>
-        <Text style={[Title.Principal, styles.section]}>Iniciar Seción</Text>
-        <FormInput placeholder="Nombre o correo" icon="user" />
-        <FormInput placeholder="Contraseña" icon="lock" isPassword/>
-        <TouchableOpacity>
-            <Text style={[NormalText.Regular, styles.text]}>Olvidé mi contraseña</Text>
-        </TouchableOpacity>
+        <Text style={[Title.Principal, styles.section]}>Crear Cuenta</Text>
+        <FormInput placeholder="Nombre" icon="user" />
+        <FormInput placeholder="Correo electrónico" icon="lock" />
+        <FormInput placeholder="Contraseña" icon="lock" />
+        <FormInput placeholder="Confirmar Contraseña" icon="lock" />
+        
+
         <CustomButtom text="Empezemos" color={Colors.light.primary[500]} />
         
         <Text style={[NormalText.Regular, styles.text]}>Puedes intentar con...</Text>
@@ -75,13 +74,14 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     paddingTop: 30,
     alignItems: "center",
+    marginTop: 100
   },
   title: {
     fontSize: 64,
     color: Colors.light.base.white,
   },
   section: {
-    fontSize: 48,
+    fontSize: Platform.OS == 'ios' ? 48 : 34,
     color: Colors.light.primary[500],
     marginBottom: 10,
   },
@@ -91,4 +91,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default SignUpScreen;
+export default SignInScreen;

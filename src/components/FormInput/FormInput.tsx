@@ -7,10 +7,11 @@ import { FontAwesome } from "@expo/vector-icons";
 interface FormInputProps {
     placeholder: string,
     icon: string,
+    isPassword?: boolean,
 }
 
 
-const FormInput = ({placeholder, icon}: FormInputProps) => {
+const FormInput = ({placeholder, icon, isPassword}: FormInputProps) => {
   return (
     <View style={styles.input}>
       <FontAwesome 
@@ -19,9 +20,10 @@ const FormInput = ({placeholder, icon}: FormInputProps) => {
       size={24} 
       color={Colors.light.neutral[400]} />
       <TextInput
-        style={[Title.Section, { color: Colors.light.neutral[400] }]}
+        style={[Title.Section, { color: Colors.light.neutral[400],  width: '85%' }]}
         placeholderTextColor={Colors.light.neutral[400]}
         placeholder={placeholder}
+        secureTextEntry={isPassword}
       />
     </View>
   );
