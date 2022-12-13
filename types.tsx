@@ -21,7 +21,7 @@ export type RootStackParamList = {
   Quiz: {id: string};
   EndQuiz: {numberOfQuestions: number; numberOfCorrectAnswers: number};
   Start: undefined;
-  SignUp: undefined;
+  LogIn: undefined;
   SignIn: undefined;
   ConfirmAccount: undefined;
   ResetPasswordCode: undefined;

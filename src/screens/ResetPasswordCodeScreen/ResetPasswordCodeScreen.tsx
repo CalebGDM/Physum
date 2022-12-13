@@ -2,24 +2,36 @@ import { View, Text, Image, StyleSheet, TouchableOpacity, KeyboardAvoidingView, 
 import React from "react";
 import Colors from "../../constants/Colors";
 import CustomButtom from "../../components/CustomButtom";
-import { NormalText, Title } from "../../constants/Texts";
+import { Forms, NormalText, Title } from "../../constants/Texts";
 // @ts-expect-error
 import bgImage from "../../../assets/images/BgImage.png";
 import FormInput from "../../components/FormInput";
+import { useNavigation } from "@react-navigation/native";
 
 const ResetPasswordCodeScreen = () => {
+  const navigation = useNavigation()
+  const onSendCodePressed = () => {
+
+  }
+  const onLogInPressed = () => {
+    navigation.navigate('LogIn')
+  }
   return (
+    <KeyboardAvoidingView 
+      style={{flex: 1}}
+      behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+    >
     <View style={styles.container} >
       <Image style={styles.image} source={bgImage} />
       
       <View style={styles.form}>
-        <Text style={[Title.Principal, styles.section]} numberOfLines={2}>Restablecer Contraseña</Text>
+        <Text style={[Forms.Title, styles.section]} numberOfLines={2}>Restablecer Contraseña</Text>
         <FormInput placeholder="Nombre" icon="user" />
         
        
-        <CustomButtom text="Confirmar" color={Colors.light.primary[500]} />
+        <CustomButtom text="Enviar Código" color={Colors.light.primary[500]} onPress={onSendCodePressed}/>
         <View style={styles.btnContainer}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={onLogInPressed}>
             <Text style={[NormalText.Regular, styles.texto]}>Iniciar Seción</Text>
         </TouchableOpacity>
         
@@ -28,6 +40,7 @@ const ResetPasswordCodeScreen = () => {
         
       </View>
     </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -53,13 +66,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 100
   },
-  title: {
-    fontSize: 64,
-    color: Colors.light.base.white,
-    textAlign: 'center'
-  },
   section: {
-    fontSize: 48,
     color: Colors.light.primary[500],
     marginBottom: 10,
     textAlign: 'center'

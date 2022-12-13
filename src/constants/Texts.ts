@@ -1,13 +1,17 @@
 import { Platform, StyleSheet } from "react-native";
 
 export const Title = StyleSheet.create({
+    MegaTitle: {
+        fontSize: Platform.OS == "ios" ? 64 :  45,
+        fontFamily: 'fredoka',
+    },
     Principal: {
         fontFamily: 'fredoka',
         fontSize: Platform.OS == "ios" ? 40 :  34
     },
     Secondary: {
         fontFamily: 'fredoka',
-        fontSize: Platform.OS == "ios" ? 32 :  25
+        fontSize: Platform.OS == "ios" ? 32 :  24
     },
     Section: {
         fontFamily: 'fredoka',
@@ -19,18 +23,30 @@ export const Title = StyleSheet.create({
     },
 })
 
+export const Forms = StyleSheet.create({
+    Title: {
+        fontFamily: 'fredoka',
+        fontSize: Platform.OS == "ios" ? 50 : 30,
+    },
+    
+    Input: {
+        fontFamily: 'fredoka',
+        fontSize: Platform.OS == "ios" ? 28 :  15
+    },
+})
+
 export const NormalText = StyleSheet.create({
     Light: {
         fontFamily: 'nunito-regular',
-        fontSize: 16
+        fontSize: Platform.OS ==  'ios' ? 16 : 14
     },
     Regular: {
         fontFamily: 'nunito-medium',
-        fontSize: 16
+        fontSize: Platform.OS ==  'ios' ? 16 : 14
     },
     Bold: {
         fontFamily: 'nunito-bold',
-        fontSize: 16
+        fontSize: Platform.OS ==  'ios' ? 16 : 14
     },
 })
 

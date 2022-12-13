@@ -2,7 +2,7 @@ import { View, Text, Image, StyleSheet, TouchableOpacity, KeyboardAvoidingView, 
 import React from "react";
 import Colors from "../../constants/Colors";
 import CustomButtom from "../../components/CustomButtom";
-import { NormalText, Title } from "../../constants/Texts";
+import { Forms, NormalText, Title } from "../../constants/Texts";
 // @ts-expect-error
 import bgImage from "../../../assets/images/BgImage.png";
 import FormInput from "../../components/FormInput";
@@ -13,7 +13,7 @@ const ConfirmAccountScreen = () => {
       <Image style={styles.image} source={bgImage} />
       
       <View style={styles.form}>
-        <Text style={[Title.Principal, styles.section]} numberOfLines={2}>Reestablecer Contraseña</Text>
+        <Text style={[Forms.Title, styles.section]} numberOfLines={2}>Reestablecer Contraseña</Text>
         <FormInput placeholder="Código de verificación" icon="lock" />
         <FormInput placeholder="Nueva contraseña" icon="lock" /> 
         <FormInput placeholder="Confirmar contraseña" icon="lock" /> 
@@ -56,13 +56,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 100
   },
-  title: {
-    fontSize: 64,
-    color: Colors.light.base.white,
-    textAlign: 'center'
-  },
   section: {
-    fontSize: 48,
     color: Colors.light.primary[500],
     marginBottom: 10,
     textAlign: 'center'

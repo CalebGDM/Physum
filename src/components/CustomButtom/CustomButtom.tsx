@@ -62,7 +62,11 @@ const CustomButtom = ({
                 ? Colors.light.neutral[300]
                 : Colors[theme].primary[900],
           },
+          {
+            textAlign: 'center'
+          }
         ]}
+        numberOfLines={2}
       >
         {text}
       </Text>
@@ -72,7 +76,7 @@ const CustomButtom = ({
 const styles = StyleSheet.create({
   button: {
     width: "90%",
-    height: 60,
+    minHeight: 60,
     borderRadius: 50,
     alignSelf: "center",
     justifyContent: "center",

@@ -5,8 +5,9 @@ import {
   StyleSheet,
   TouchableOpacity,
   Platform,
-  ScrollView,
   KeyboardAvoidingView,
+  ScrollView,
+  StatusBar,
 } from "react-native";
 import React from "react";
 import Colors from "../../constants/Colors";
@@ -17,31 +18,20 @@ import bgImage from "../../../assets/images/BgImage.png";
 import FormInput from "../../components/FormInput";
 import { useNavigation } from "@react-navigation/native";
 
-const SignInScreen = () => {
-  const navigation = useNavigation()
-  const onSignUpPressed = () => {
-    // REGISTRAR
-    navigation.navigate('ConfirmAccount')
-  }
-
-
-  const onSignUpWidthGooglePressed= () => {
-
-  }
-  
-  const onSignUpWidthFacebookPressed = () => {
-
-  }
-
-
-  const onSignUpWidthApplePressed = () => {
-
-  }
-
-  const onLogInPressed = () => {
-    navigation.navigate('LogIn')
-  }
-
+const LogInScreen = () => {
+  const navigation = useNavigation();
+  const onSingUpPressed = () => {
+    // SIGNUP
+  };
+  const onForgotPasswordPressed = () => {
+    navigation.navigate('ResetPasswordCode')
+  };
+  const onSignUpWidthGooglePressed = () => {};
+  const onSignUpWidthFacebookPressed = () => {};
+  const onSignUpWidthApplePressed = () => {};
+  const onSignInPressed = () => {
+    navigation.navigate("SignIn");
+  };
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
@@ -49,15 +39,24 @@ const SignInScreen = () => {
     >
       <ScrollView style={styles.container}>
         <Image style={styles.image} source={bgImage} />
+        <View style={styles.titleContainer}>
+          <Text style={[Title.MegaTitle, styles.title]}>PHYSUM</Text>
+        </View>
 
         <View style={styles.form}>
-          <Text style={[Forms.Title, styles.section]}>Crear Cuenta</Text>
-          <FormInput placeholder="Nombre" icon="user" />
-          <FormInput placeholder="Correo electrónico" icon="envelope" />
-          <FormInput placeholder="Contraseña" icon="lock" />
-          <FormInput placeholder="Confirmar Contraseña" icon="lock" />
-
-          <CustomButtom text="Registrar" color={Colors.light.primary[500]} onPress={onSignUpPressed}/>
+          <Text style={[Forms.Title, styles.section]}>Iniciar Sesión</Text>
+          <FormInput placeholder="Nombre o correo" icon="user" />
+          <FormInput placeholder="Contraseña" icon="lock" isPassword />
+          <TouchableOpacity onPress={onForgotPasswordPressed}>
+            <Text style={[NormalText.Regular, styles.text]}>
+              Olvidé mi contraseña
+            </Text>
+          </TouchableOpacity>
+          <CustomButtom
+            text="Iniciar Sesión"
+            color={Colors.light.primary[500]}
+            onPress={onSingUpPressed}
+          />
 
           <Text style={[NormalText.Regular, styles.text]}>
             Puedes intentar con...
@@ -91,13 +90,13 @@ const SignInScreen = () => {
             />
           ) : null}
 
-          <TouchableOpacity onPress={onLogInPressed}>
-            <Text style={[NormalText.Regular, styles.text]}>
-              ¿Ya tienes cuenta?{" "}
+          <TouchableOpacity onPress={onSignInPressed}>
+            <Text style={[NormalText.Regular, styles.text]} numberOfLines={2}>
+              ¿No tienes cuenta?{" "}
               <Text
                 style={[NormalText.Light, { color: Colors.light.primary[500] }]}
               >
-                Inicia Sesion
+                Crea una
               </Text>
             </Text>
           </TouchableOpacity>
@@ -122,16 +121,22 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     position: "absolute",
+    left: 0,
+    top: 0,
   },
   form: {
-    width: "100%",
-    height: "100%",
+    width: '100%',
+    height: '100%',
     backgroundColor: Colors.light.base.white,
-    borderRadius: 50,
+    borderTopLeftRadius: 50,
+    borderTopRightRadius: 50,
     paddingTop: 30,
     alignItems: "center",
-    marginTop: 100,
-    paddingBottom: 60,
+    paddingBottom: 50,
+  },
+  title: {
+
+    color: Colors.light.base.white,
   },
   section: {
     color: Colors.light.primary[500],
@@ -143,4 +148,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignInScreen;
+export default LogInScreen;

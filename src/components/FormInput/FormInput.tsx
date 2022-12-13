@@ -1,7 +1,7 @@
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import React from "react";
 import Colors from "../../constants/Colors";
-import { Title } from "../../constants/Texts";
+import { Forms, Title } from "../../constants/Texts";
 import { FontAwesome } from "@expo/vector-icons";
 
 interface FormInputProps {
@@ -20,7 +20,7 @@ const FormInput = ({placeholder, icon, isPassword}: FormInputProps) => {
       size={24} 
       color={Colors.light.neutral[400]} />
       <TextInput
-        style={[Title.Section, { color: Colors.light.neutral[400],  width: '85%' }]}
+        style={[Forms.Input, { color: Colors.light.neutral[400],  width: '85%' }]}
         placeholderTextColor={Colors.light.neutral[400]}
         placeholder={placeholder}
         secureTextEntry={isPassword}
