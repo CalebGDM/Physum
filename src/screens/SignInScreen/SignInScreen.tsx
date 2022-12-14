@@ -16,48 +16,108 @@ import { Forms, NormalText, Title } from "../../constants/Texts";
 import bgImage from "../../../assets/images/BgImage.png";
 import FormInput from "../../components/FormInput";
 import { useNavigation } from "@react-navigation/native";
+import { useForm } from "react-hook-form";
+import { validatePwd } from "../../utils/ValidatePwd";
+
+
+const EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
 
 const SignInScreen = () => {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm();
+  const pwd = watch("password");
+  
   const onSignUpPressed = () => {
     // REGISTRAR
-    navigation.navigate('ConfirmAccount')
-  }
+    navigation.navigate("ConfirmAccount");
+  };
 
+  const onSignUpWidthGooglePressed = () => {};
 
-  const onSignUpWidthGooglePressed= () => {
+  const onSignUpWidthFacebookPressed = () => {};
 
-  }
-  
-  const onSignUpWidthFacebookPressed = () => {
-
-  }
-
-
-  const onSignUpWidthApplePressed = () => {
-
-  }
+  const onSignUpWidthApplePressed = () => {};
 
   const onLogInPressed = () => {
-    navigation.navigate('LogIn')
-  }
+    navigation.navigate("LogIn");
+  };
 
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <ScrollView style={styles.container}>
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <Image style={styles.image} source={bgImage} />
 
         <View style={styles.form}>
           <Text style={[Forms.Title, styles.section]}>Crear Cuenta</Text>
-          <FormInput placeholder="Nombre" icon="user" />
-          <FormInput placeholder="Correo electrónico" icon="envelope" />
-          <FormInput placeholder="Contraseña" icon="lock" />
-          <FormInput placeholder="Confirmar Contraseña" icon="lock" />
+          <FormInput
+            placeholder="Nombre"
+            icon="user"
+            name="userName"
+            control={control}
+            rules={{
+              required: "Sin un nombre no podemos crear tu cuenta",
+              minLength: {
+                value: 3,
+                message: "Tu nombre debería tener mínimo 3 letras",
+              },
+              maxLength: {
+                value: 24,
+                message: "Tu nombre no debería tener más de 24 letras",
+              },
+            }}
+          />
+          <FormInput
+            placeholder="Correo electrónico"
+            icon="envelope"
+            name="email"
+            control={control}
+            rules={{
+              required:
+                "Es necesario un correo electrónico para hacer una cuenta",
+              pattern: {
+                value: EMAIL_REGEX,
+                message: "Tu correo no es válidoa",
+              },
+            }}
+          />
+          <FormInput
+            placeholder="Contraseña"
+            icon="lock"
+            name="password"
+            control={control}
+            rules={{
+              required: "Necesitas establecer una contraseña",
+              validate: (value) => validatePwd(value)
+            }}
+            isPassword
+          />
+          <FormInput
+            placeholder="Confirmar Contraseña"
+            icon="lock"
+            name="repeatedPassword"
+            control={control}
+            rules={{
+              required: "Necesitas confirmar tu contraseña",
+              validate: (value) =>
+                value === pwd || "Tu contraseña no coincidea",
+            }}
+            isPassword
+          />
 
-          <CustomButtom text="Registrar" color={Colors.light.primary[500]} onPress={onSignUpPressed}/>
+          <CustomButtom
+            text="Registrar"
+            color={Colors.light.primary[500]}
+            onPress={handleSubmit(onSignUpPressed)}
+          />
 
           <Text style={[NormalText.Regular, styles.text]}>
             Puedes intentar con...
@@ -131,7 +191,7 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     alignItems: "center",
     marginTop: 100,
-    paddingBottom: 60,
+    paddingBottom: 200,
   },
   section: {
     color: Colors.light.primary[500],

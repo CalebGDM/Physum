@@ -15,9 +15,11 @@ import { Forms, NormalText, Title } from "../../constants/Texts";
 import bgImage from "../../../assets/images/BgImage.png";
 import FormInput from "../../components/FormInput";
 import { useNavigation } from "@react-navigation/native";
+import { useForm } from "react-hook-form";
 
 const ConfirmAccountScreen = () => {
   const navigation = useNavigation()
+  const {control, handleSubmit, formState: {errors}} = useForm()
   const onConfirmAccountPressed = () => {
     // CONFIRM
     navigation.navigate('Root')
@@ -42,9 +44,9 @@ const ConfirmAccountScreen = () => {
           <Text style={[Forms.Title, styles.section]} numberOfLines={2}>
             Confirma tu Cuenta
           </Text>
-          <FormInput placeholder="Código de verificación" icon="lock" />
+          <FormInput placeholder="Código de verificación" icon="lock" name="code" control={control} rules={{required: 'Necesitas tu códgio para confirmar tu cuenta'}}/>
 
-          <CustomButtom text="Confirmar" color={Colors.light.primary[500]} onPress={onConfirmAccountPressed}/>
+          <CustomButtom text="Confirmar" color={Colors.light.primary[500]} onPress={handleSubmit(onConfirmAccountPressed)}/>
           <View style={styles.btnContainer}>
             <TouchableOpacity onPress={onReSendCodePressed}>
               <Text style={[NormalText.Regular, styles.text]}>

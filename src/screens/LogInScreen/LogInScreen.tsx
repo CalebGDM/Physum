@@ -17,14 +17,24 @@ import { Forms, NormalText, Title } from "../../constants/Texts";
 import bgImage from "../../../assets/images/BgImage.png";
 import FormInput from "../../components/FormInput";
 import { useNavigation } from "@react-navigation/native";
+import { Controller, useForm } from "react-hook-form";
+import { validatePwd } from "../../utils/ValidatePwd";
 
 const LogInScreen = () => {
   const navigation = useNavigation();
-  const onSingUpPressed = () => {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onSingUpPressed = (data: {}) => {
+    
+    console.log(data);
     // SIGNUP
   };
   const onForgotPasswordPressed = () => {
-    navigation.navigate('ResetPasswordCode')
+    navigation.navigate("ResetPasswordCode");
   };
   const onSignUpWidthGooglePressed = () => {};
   const onSignUpWidthFacebookPressed = () => {};
@@ -37,7 +47,7 @@ const LogInScreen = () => {
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <ScrollView style={styles.container}>
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <Image style={styles.image} source={bgImage} />
         <View style={styles.titleContainer}>
           <Text style={[Title.MegaTitle, styles.title]}>PHYSUM</Text>
@@ -45,8 +55,36 @@ const LogInScreen = () => {
 
         <View style={styles.form}>
           <Text style={[Forms.Title, styles.section]}>Iniciar Sesión</Text>
-          <FormInput placeholder="Nombre o correo" icon="user" />
-          <FormInput placeholder="Contraseña" icon="lock" isPassword />
+
+          <FormInput
+            placeholder="Nombre o correo"
+            icon="user"
+            name="userName"
+            control={control}
+            rules={{
+              required: 'Es necesario tu nombre de usuario o correo electrónico',
+              minLength: {
+                value: 3,
+                message: "Tu nombre debería tener mínimo 3 letras",
+              },
+              maxLength: {
+                value: 24,
+                message: "Tu nombre no debería tener más de 24 letras",
+              },
+             }}
+          />
+
+          <FormInput
+            placeholder="Contraseña"
+            icon="lock"
+            isPassword
+            name="password"
+            control={control}
+            rules={{
+              required: 'Sin tu contraseña no puedes iniciar sesión',
+              validate: (value) => validatePwd(value)
+             }}
+          />
           <TouchableOpacity onPress={onForgotPasswordPressed}>
             <Text style={[NormalText.Regular, styles.text]}>
               Olvidé mi contraseña
@@ -55,7 +93,7 @@ const LogInScreen = () => {
           <CustomButtom
             text="Iniciar Sesión"
             color={Colors.light.primary[500]}
-            onPress={onSingUpPressed}
+            onPress={handleSubmit(onSingUpPressed)}
           />
 
           <Text style={[NormalText.Regular, styles.text]}>
@@ -125,17 +163,16 @@ const styles = StyleSheet.create({
     top: 0,
   },
   form: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
     backgroundColor: Colors.light.base.white,
     borderTopLeftRadius: 50,
     borderTopRightRadius: 50,
     paddingTop: 30,
     alignItems: "center",
-    paddingBottom: 50,
+    paddingBottom: 200,
   },
   title: {
-
     color: Colors.light.base.white,
   },
   section: {

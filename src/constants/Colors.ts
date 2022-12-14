@@ -52,6 +52,7 @@ export default {
       800: "#1C1C1C",
       900: "#0E0E0E",
     },
+    error: '#FF5530',
     tint: tintColorLight,
     tabIconDefault: '#6B6B6B',
     tabIconSelected: tintColorLight,
