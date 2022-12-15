@@ -32,8 +32,11 @@ const TopicScreen = () => {
       showsVerticalScrollIndicator={false}
     >
       <View style={Styles.content}>
-        <Markdown style={MarkdownStyles}>{topicInfo[0].info}</Markdown>
-        <SectionSign label="Recuros extra" />
+        <Markdown style={MarkdownStyles}>{topic?.info}</Markdown>
+        {
+          topic?.resources && <SectionSign label="Recuros extra" />
+        }
+        
         {topic?.resources?.map((resource, index) => (
           <ResourceItem resource={resource} index={index} />
         ))}
