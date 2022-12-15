@@ -7,6 +7,7 @@ import {
   Platform,
   ScrollView,
   KeyboardAvoidingView,
+  Alert,
 } from "react-native";
 import React from "react";
 import Colors from "../../constants/Colors";
@@ -18,10 +19,9 @@ import FormInput from "../../components/FormInput";
 import { useNavigation } from "@react-navigation/native";
 import { useForm } from "react-hook-form";
 import { validatePwd } from "../../utils/ValidatePwd";
-
+import { Auth } from "aws-amplify";
 
 const EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-
 
 const SignInScreen = () => {
   const navigation = useNavigation();
@@ -32,10 +32,20 @@ const SignInScreen = () => {
     watch,
   } = useForm();
   const pwd = watch("password");
-  
-  const onSignUpPressed = () => {
-    // REGISTRAR
-    navigation.navigate("ConfirmAccount");
+//@ts-expect-error
+  const onSignUpPressed = async (data) => {
+   
+    const { username, password, email, name } = data;
+    try {
+      await Auth.signUp({
+        username,
+        password,
+        attributes: { email, name },
+      });
+      navigation.navigate('ConfirmAccount', {username})
+    } catch (e) {
+      Alert.alert("Error al crear cuenta", e.message);
+    }
   };
 
   const onSignUpWidthGooglePressed = () => {};
@@ -61,10 +71,27 @@ const SignInScreen = () => {
           <FormInput
             placeholder="Nombre"
             icon="user"
-            name="userName"
+            name="name"
             control={control}
             rules={{
               required: "Sin un nombre no podemos crear tu cuenta",
+              minLength: {
+                value: 3,
+                message: "Tu nombre debería tener mínimo 3 letras",
+              },
+              maxLength: {
+                value: 24,
+                message: "Tu nombre no debería tener más de 24 letras",
+              },
+            }}
+          />
+          <FormInput
+            placeholder="Nombre de usuario"
+            icon="user"
+            name="username"
+            control={control}
+            rules={{
+              required: "Sin un nombre de usuario no podemos crear tu cuenta",
               minLength: {
                 value: 3,
                 message: "Tu nombre debería tener mínimo 3 letras",
@@ -88,6 +115,7 @@ const SignInScreen = () => {
                 message: "Tu correo no es válidoa",
               },
             }}
+            isEmail
           />
           <FormInput
             placeholder="Contraseña"
@@ -96,7 +124,7 @@ const SignInScreen = () => {
             control={control}
             rules={{
               required: "Necesitas establecer una contraseña",
-              validate: (value) => validatePwd(value)
+              validate: (value) => validatePwd(value),
             }}
             isPassword
           />
@@ -108,7 +136,7 @@ const SignInScreen = () => {
             rules={{
               required: "Necesitas confirmar tu contraseña",
               validate: (value) =>
-                value === pwd || "Tu contraseña no coincidea",
+                value === pwd || "Tu contraseña no coinciden",
             }}
             isPassword
           />

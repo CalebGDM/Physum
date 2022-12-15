@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
+  Alert,
 } from "react-native";
 import React from "react";
 import Colors from "../../constants/Colors";
@@ -14,24 +15,43 @@ import { Forms, NormalText, Title } from "../../constants/Texts";
 // @ts-ignore
 import bgImage from "../../../assets/images/BgImage.png";
 import FormInput from "../../components/FormInput";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { useForm } from "react-hook-form";
+import { Auth } from "aws-amplify";
 
 const ConfirmAccountScreen = () => {
-  const navigation = useNavigation()
-  const {control, handleSubmit, formState: {errors}} = useForm()
-  const onConfirmAccountPressed = () => {
-    // CONFIRM
-    navigation.navigate('Root')
-  }
+  const navigation = useNavigation();
+  const route = useRoute()
 
-  const onReSendCodePressed = () => {
-    
-  }
-  
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    watch
+  } = useForm({defaultValues: {username: route?.params?.username }});
+  const username = watch('username')
+  const onConfirmAccountPressed = async (data) => {
+    try {
+      await Auth.confirmSignUp(data.username, data.code)
+      navigation.navigate('LogIn')
+      
+    } catch (e) {
+      Alert.alert('Error al confirmar cuenta', e.message)
+    }
+  };
+
+  const onReSendCodePressed = async () => {
+    try {
+      await Auth.resendSignUp(username)
+      Alert.alert('Código reenviado', 'El código de verificación fué reenviado a tu correo electrónico.')
+    } catch (e) {
+      Alert.alert('Error al reenviar código de verificación', e.message)
+    }
+  };
+
   const onLogInPressed = () => {
-    navigation.navigate('LogIn')
-  }
+    navigation.navigate("LogIn");
+  };
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
@@ -44,9 +64,37 @@ const ConfirmAccountScreen = () => {
           <Text style={[Forms.Title, styles.section]} numberOfLines={2}>
             Confirma tu Cuenta
           </Text>
-          <FormInput placeholder="Código de verificación" icon="lock" name="code" control={control} rules={{required: 'Necesitas tu códgio para confirmar tu cuenta'}}/>
+          <FormInput
+            placeholder="Nombre de usuario"
+            icon="user"
+            name="username"
+            control={control}
+            rules={{
+              required:
+                "Sin un nombre de usuario no podemos confirmar tu cuenta",
+              minLength: {
+                value: 3,
+                message: "Tu nombre debería tener mínimo 3 letras",
+              },
+              maxLength: {
+                value: 24,
+                message: "Tu nombre no debería tener más de 24 letras",
+              },
+            }}
+          />
+          <FormInput
+            placeholder="Código de verificación"
+            icon="lock"
+            name="code"
+            control={control}
+            rules={{ required: "Necesitas tu códgio para confirmar tu cuenta" }}
+          />
 
-          <CustomButtom text="Confirmar" color={Colors.light.primary[500]} onPress={handleSubmit(onConfirmAccountPressed)}/>
+          <CustomButtom
+            text="Confirmar"
+            color={Colors.light.primary[500]}
+            onPress={handleSubmit(onConfirmAccountPressed)}
+          />
           <View style={styles.btnContainer}>
             <TouchableOpacity onPress={onReSendCodePressed}>
               <Text style={[NormalText.Regular, styles.text]}>

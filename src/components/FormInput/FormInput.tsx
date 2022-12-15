@@ -14,6 +14,7 @@ interface FormInputProps {
   name: string;
   control: any;
   rules?: {};
+  isEmail?: boolean;
 }
 
 const FormInput = ({
@@ -23,6 +24,7 @@ const FormInput = ({
   name,
   control,
   rules = {},
+  isEmail,
 }: FormInputProps) => {
   return (
     <Controller
@@ -52,6 +54,7 @@ const FormInput = ({
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}
+              autoCapitalize={isEmail ? 'none': 'sentences'}
             />
           </View>
           {

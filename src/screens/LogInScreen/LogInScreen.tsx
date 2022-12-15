@@ -8,8 +8,9 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   StatusBar,
+  Alert,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import Colors from "../../constants/Colors";
 import CustomButtom from "../../components/CustomButtom";
 import { Forms, NormalText, Title } from "../../constants/Texts";
@@ -19,6 +20,7 @@ import FormInput from "../../components/FormInput";
 import { useNavigation } from "@react-navigation/native";
 import { Controller, useForm } from "react-hook-form";
 import { validatePwd } from "../../utils/ValidatePwd";
+import { Auth } from "aws-amplify";
 
 const LogInScreen = () => {
   const navigation = useNavigation();
@@ -26,15 +28,26 @@ const LogInScreen = () => {
     control,
     handleSubmit,
     formState: { errors },
+    watch
   } = useForm();
+  const [loading, setLoading] = useState(false)
+  const username = watch('username')
 
-  const onSingUpPressed = (data: {}) => {
-    
-    console.log(data);
-    // SIGNUP
+  const onSingUpPressed = async (data) => {
+    if(loading){
+      return
+    }
+    setLoading(true)
+    try {
+     await Auth.signIn(data.username, data.password);
+      
+    } catch (e) {
+      Alert.alert("Error al iniciar sesión", e.message);
+    }
+    setLoading(false)
   };
   const onForgotPasswordPressed = () => {
-    navigation.navigate("ResetPasswordCode");
+    navigation.navigate("ResetPasswordCode", {username});
   };
   const onSignUpWidthGooglePressed = () => {};
   const onSignUpWidthFacebookPressed = () => {};
@@ -57,12 +70,13 @@ const LogInScreen = () => {
           <Text style={[Forms.Title, styles.section]}>Iniciar Sesión</Text>
 
           <FormInput
-            placeholder="Nombre o correo"
+            placeholder="Nombre de usuario"
             icon="user"
-            name="userName"
+            name="username"
             control={control}
             rules={{
-              required: 'Es necesario tu nombre de usuario o correo electrónico',
+              required:
+                "Es necesario tu nombre de usuario o correo electrónico",
               minLength: {
                 value: 3,
                 message: "Tu nombre debería tener mínimo 3 letras",
@@ -71,7 +85,7 @@ const LogInScreen = () => {
                 value: 24,
                 message: "Tu nombre no debería tener más de 24 letras",
               },
-             }}
+            }}
           />
 
           <FormInput
@@ -81,9 +95,9 @@ const LogInScreen = () => {
             name="password"
             control={control}
             rules={{
-              required: 'Sin tu contraseña no puedes iniciar sesión',
-              validate: (value) => validatePwd(value)
-             }}
+              required: "Sin tu contraseña no puedes iniciar sesión",
+              validate: (value: any) => validatePwd(value),
+            }}
           />
           <TouchableOpacity onPress={onForgotPasswordPressed}>
             <Text style={[NormalText.Regular, styles.text]}>
@@ -91,7 +105,7 @@ const LogInScreen = () => {
             </Text>
           </TouchableOpacity>
           <CustomButtom
-            text="Iniciar Sesión"
+            text={loading ? "Cargando..." : "Iniciar Sesión"}
             color={Colors.light.primary[500]}
             onPress={handleSubmit(onSingUpPressed)}
           />

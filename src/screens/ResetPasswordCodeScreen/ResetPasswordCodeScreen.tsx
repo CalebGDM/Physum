@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
+  Alert,
 } from "react-native";
 import React from "react";
 import Colors from "../../constants/Colors";
@@ -14,18 +15,26 @@ import { Forms, NormalText, Title } from "../../constants/Texts";
 // @ts-expect-error
 import bgImage from "../../../assets/images/BgImage.png";
 import FormInput from "../../components/FormInput";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { useForm } from "react-hook-form";
+import { Auth } from "aws-amplify";
 
 const ResetPasswordCodeScreen = () => {
   const navigation = useNavigation();
+  const route = useRoute()
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm();
-  const onSendCodePressed = () => {
-    navigation.navigate('ResetPassword')
+  } = useForm({defaultValues: {username:route?.params?.username }});
+  const onSendCodePressed = async (data) => {
+    try {
+      await Auth.forgotPassword(data.username)
+      navigation.navigate('ResetPassword', {username})
+    } catch (e) {
+      Alert.alert('Error al enviar código', e.message)
+    }
+    
   };
   const onLogInPressed = () => {
     navigation.navigate("LogIn");
@@ -45,7 +54,7 @@ const ResetPasswordCodeScreen = () => {
           <FormInput
             placeholder="Nombre"
             icon="user"
-            name="userName"
+            name="username"
             control={control}
             rules={{
               required: "Sin un nombre no podemos reestablecer tu contraseña",

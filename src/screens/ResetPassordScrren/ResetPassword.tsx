@@ -15,36 +15,29 @@ import { Forms, NormalText, Title } from "../../constants/Texts";
 // @ts-expect-error
 import bgImage from "../../../assets/images/BgImage.png";
 import FormInput from "../../components/FormInput";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { useForm } from "react-hook-form";
 import { validatePwd } from "../../utils/ValidatePwd";
+import { Auth } from "aws-amplify";
 
 const ConfirmAccountScreen = () => {
   const navigation = useNavigation();
+  const route = useRoute()
   const {
     control,
     handleSubmit,
     formState: { errors },
     watch
-  } = useForm();
-  const pwd = watch('newPassword')
-  const onReSetPasswordPressed = () => {
+  } = useForm({defaultValues: {username: route?.params?.username}});
+  const pwd = watch('password')
+  const onReSetPasswordPressed =  async ( data ) => {
     // Reestablecer contraseña
-    Alert.alert(
-      "Se reestableció correctamente tu contraseña",
-      "Se ha reestablecido correctamente tu nueva contraseña, intta iniciar sesión",
-      [
-        {
-          text: "Tal vez luego",
-          style: "destructive",
-        },
-        {
-          text: "Iniciar Sesión",
-          onPress: () => navigation.navigate('LogIn'),
-          style: "default",
-        },
-      ]
-    );
+    try {
+      await Auth.forgotPasswordSubmit(data.username, data.code, data.password)
+      navigation.navigate('LogIn')
+    } catch (e) {
+      Alert.alert('Error al reestablecer contraseña', e.message)
+    }
   };
 
   const onReSendCodePressed = () => {};
@@ -61,6 +54,23 @@ const ConfirmAccountScreen = () => {
           Reestablecer Contraseña
         </Text>
         <FormInput
+            placeholder="Nombre de usuario"
+            icon="user"
+            name="username"
+            control={control}
+            rules={{
+              required: "Sin un nombre de usuario no podemos crear tu cuenta",
+              minLength: {
+                value: 3,
+                message: "Tu nombre debería tener mínimo 3 letras",
+              },
+              maxLength: {
+                value: 24,
+                message: "Tu nombre no debería tener más de 24 letras",
+              },
+            }}
+          />
+        <FormInput
           placeholder="Código de verificación"
           icon="lock"
           control={control}
@@ -72,7 +82,7 @@ const ConfirmAccountScreen = () => {
         <FormInput
           placeholder="Nueva contraseña"
           icon="lock"
-          name="newPassword"
+          name="password"
           control={control}
           rules={{
             required: 'Sin tu contraseña no puedes iniciar sesión',
@@ -88,7 +98,7 @@ const ConfirmAccountScreen = () => {
           rules={{
             required: "Necesitas confirmar tu contraseña",
             validate: (value) =>
-              value === pwd || "Tu contraseña no coincidea",
+              value === pwd || "Tu contraseña no coinciden",
           }}
           isPassword
         />
