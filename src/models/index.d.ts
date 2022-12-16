@@ -6,6 +6,84 @@ import { LazyLoading, LazyLoadingDisabled, AsyncCollection, AsyncItem } from "@a
 
 
 
+type EagerQuizResult = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<QuizResult, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly sub: string;
+  readonly nofQuestions: number;
+  readonly nofCorretAnswers: number;
+  readonly precentage: number;
+  readonly failedQuestions?: string[] | null;
+  readonly attemps: number;
+  readonly quizID: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyQuizResult = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<QuizResult, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly sub: string;
+  readonly nofQuestions: number;
+  readonly nofCorretAnswers: number;
+  readonly precentage: number;
+  readonly failedQuestions?: string[] | null;
+  readonly attemps: number;
+  readonly quizID: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type QuizResult = LazyLoading extends LazyLoadingDisabled ? EagerQuizResult : LazyQuizResult
+
+export declare const QuizResult: (new (init: ModelInit<QuizResult>) => QuizResult) & {
+  copyOf(source: QuizResult, mutator: (draft: MutableModel<QuizResult>) => MutableModel<QuizResult> | void): QuizResult;
+}
+
+type EagerUserTopicProgress = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<UserTopicProgress, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly sub: string;
+  readonly completedResources: string[];
+  readonly completedExercises?: string[] | null;
+  readonly progress: number;
+  readonly isCompleted?: boolean | null;
+  readonly topicID: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyUserTopicProgress = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<UserTopicProgress, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly sub: string;
+  readonly completedResources: string[];
+  readonly completedExercises?: string[] | null;
+  readonly progress: number;
+  readonly isCompleted?: boolean | null;
+  readonly topicID: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type UserTopicProgress = LazyLoading extends LazyLoadingDisabled ? EagerUserTopicProgress : LazyUserTopicProgress
+
+export declare const UserTopicProgress: (new (init: ModelInit<UserTopicProgress>) => UserTopicProgress) & {
+  copyOf(source: UserTopicProgress, mutator: (draft: MutableModel<UserTopicProgress>) => MutableModel<UserTopicProgress> | void): UserTopicProgress;
+}
+
 type EagerExersice = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<Exersice, 'id'>;
@@ -48,6 +126,7 @@ type EagerLesson = {
   readonly color?: string | null;
   readonly imageUri?: string | null;
   readonly Topics?: (Topic | null)[] | null;
+  readonly level?: number | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -62,6 +141,7 @@ type LazyLesson = {
   readonly color?: string | null;
   readonly imageUri?: string | null;
   readonly Topics: AsyncCollection<Topic>;
+  readonly level?: number | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -86,6 +166,7 @@ type EagerTopic = {
   readonly Exercises?: (Exersice | null)[] | null;
   readonly Quiz?: Quiz | null;
   readonly lessonID: string;
+  readonly UserTopicProgresses?: (UserTopicProgress | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly topicQuizId?: string | null;
@@ -105,6 +186,7 @@ type LazyTopic = {
   readonly Exercises: AsyncCollection<Exersice>;
   readonly Quiz: AsyncItem<Quiz | undefined>;
   readonly lessonID: string;
+  readonly UserTopicProgresses: AsyncCollection<UserTopicProgress>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly topicQuizId?: string | null;
@@ -156,6 +238,7 @@ type EagerQuiz = {
   readonly id: string;
   readonly QuizQuestions?: (QuizQuestion | null)[] | null;
   readonly name: string;
+  readonly QuizResults?: (QuizResult | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -168,6 +251,7 @@ type LazyQuiz = {
   readonly id: string;
   readonly QuizQuestions: AsyncCollection<QuizQuestion>;
   readonly name: string;
+  readonly QuizResults: AsyncCollection<QuizResult>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

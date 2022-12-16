@@ -14,7 +14,7 @@ import useApplyHeaderWorkaround from "../../../hooks/useAplyHeaderWorks";
 import SectionSign from "../../components/SectionSign";
 import ResourceItem from "../../components/ResourceItem";
 import { DataStore } from "aws-amplify";
-import { Exersice, Resource, Topic } from "../../models";
+import { Exersice, Resource, Topic, UserTopicProgress } from "../../models";
 
 const TopicScreen = () => {
   const route = useRoute();
@@ -23,6 +23,7 @@ const TopicScreen = () => {
   const [resources, setResources] = useState<Resource[]>([]);
   const [exercise, setExercise] = useState<Exersice[]>([]);
   const [topic, setTopic] = useState<Topic>();
+  const [userTopicProgress, setUserTopicProgress] = useState<UserTopicProgress>()
 
   useApplyHeaderWorkaround(navigation.setOptions);
 

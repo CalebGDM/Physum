@@ -8,23 +8,25 @@ import { getTheme } from "../../components/Themed";
 import { GStyles } from "../../constants/GeneralStyles";
 import Colors from "../../constants/Colors";
 import useApplyHeaderWorkaround from "../../../hooks/useAplyHeaderWorks";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { Topic } from "../../models";
 import { DataStore } from "aws-amplify";
 
 const TopicsScreen = () => {
   const theme = getTheme();
+  const route = useRoute()
   const navigation = useNavigation();
   useApplyHeaderWorkaround(navigation.setOptions);
 
   const [levels, setLevels] = useState<Topic[][]>([]);
   const [currentLevel, setCurrentLevel] = useState(0)
-  
+  console.log('lol')
+  console.log(route?.params?.id)
 
 
   useEffect(() => {
     const fetchTopics = async () => {
-      const topics = await (await DataStore.query(Topic)).filter((topic) => topic.lessonID == 'd6e3a16a-4209-435e-bc2b-7a34fbc6c7a8');
+      const topics = await (await DataStore.query(Topic)).filter((topic) => topic.lessonID == route?.params?.id);
       
       const _levels = groupByLevels(topics);
       setLevels(_levels);

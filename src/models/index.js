@@ -4,9 +4,11 @@ import { schema } from './schema';
 
 
 
-const { Exersice, Lesson, Topic, Resource, Quiz, QuizQuestion } = initSchema(schema);
+const { QuizResult, UserTopicProgress, Exersice, Lesson, Topic, Resource, Quiz, QuizQuestion } = initSchema(schema);
 
 export {
+  QuizResult,
+  UserTopicProgress,
   Exersice,
   Lesson,
   Topic,
