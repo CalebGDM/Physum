@@ -43,7 +43,9 @@ const TopicScreen = () => {
   const theme = getTheme();
   navigation.setOptions({ title: topic?.title });
   const onGoToQuizPressed = () => {
-    navigation.navigate("Quiz", { id: "129" });
+    if (topic?.topicQuizId) {
+      navigation.navigate("Quiz", { id: topic?.topicQuizId });
+    }
   };
   console.log(topic);
   return (
@@ -64,11 +66,13 @@ const TopicScreen = () => {
         {exercise?.map((resource, index) => (
           <ResourceItem resource={resource} index={index} key={resource.id} />
         ))}
-        <CustomButtom
-          text="Responder Quiz"
-          color={Colors[theme].primary[500]}
-          onPress={onGoToQuizPressed}
-        />
+        {topic?.topicQuizId && (
+          <CustomButtom
+            text="Responder Quiz"
+            color={Colors[theme].primary[500]}
+            onPress={onGoToQuizPressed}
+          />
+        )}
       </View>
     </ScrollView>
   );
