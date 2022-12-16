@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, TouchableOpacity } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import topics from "../../../assets/data/topics";
 import Colors from "../../constants/Colors";
@@ -13,19 +13,39 @@ import CustomButtom from "../../components/CustomButtom";
 import useApplyHeaderWorkaround from "../../../hooks/useAplyHeaderWorks";
 import SectionSign from "../../components/SectionSign";
 import ResourceItem from "../../components/ResourceItem";
+import { DataStore } from "aws-amplify";
+import { Exersice, Resource, Topic } from "../../models";
 
 const TopicScreen = () => {
   const route = useRoute();
   const navigation = useNavigation();
   const topicId = route?.params?.id;
-  const topic = topics.find((t) => t.id === topicId);
+  const [resources, setResources] = useState<Resource[]>([]);
+  const [exercise, setExercise] = useState<Exersice[]>([]);
+  const [topic, setTopic] = useState<Topic>();
+
   useApplyHeaderWorkaround(navigation.setOptions);
+
+  useEffect(() => {
+    DataStore.query(Topic, topicId).then(setTopic);
+  }, [topicId]);
+
+  useEffect(() => {
+    DataStore.query(Resource)
+      .then((resources) => resources.filter((r) => r.topicID == topicId))
+      .then(setResources);
+
+    DataStore.query(Exersice)
+      .then((exercises) => exercises.filter((e) => e.topicID == topicId))
+      .then(setExercise);
+  }, [topic]);
 
   const theme = getTheme();
   navigation.setOptions({ title: topic?.title });
   const onGoToQuizPressed = () => {
     navigation.navigate("Quiz", { id: "129" });
   };
+  console.log(topic);
   return (
     <ScrollView
       style={[{ backgroundColor: Colors[theme].background }]}
@@ -33,12 +53,16 @@ const TopicScreen = () => {
     >
       <View style={Styles.content}>
         <Markdown style={MarkdownStyles}>{topic?.info}</Markdown>
-        {
-          topic?.resources && <SectionSign label="Recuros extra" />
-        }
-        
-        {topic?.resources?.map((resource, index) => (
-          <ResourceItem resource={resource} index={index} />
+        {topic?.Resources && <SectionSign label="Recuros extra" />}
+
+        {resources?.map((resource, index) => (
+          <ResourceItem resource={resource} index={index} key={resource.id} />
+        ))}
+
+        {topic?.Exercises && <SectionSign label="Ejercisios de práctica" />}
+
+        {exercise?.map((resource, index) => (
+          <ResourceItem resource={resource} index={index} key={resource.id} />
         ))}
         <CustomButtom
           text="Responder Quiz"

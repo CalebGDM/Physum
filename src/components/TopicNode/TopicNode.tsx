@@ -13,13 +13,15 @@ import { Title } from "../../constants/Texts";
 import { Svg, Circle } from "react-native-svg";
 import CircularProgress from "../CircularProgress";
 import { useNavigation } from "@react-navigation/native";
+import { S3Image } from "aws-amplify-react-native";
+import { FontAwesome } from "@expo/vector-icons";
 
 interface TopicProps {
   topic: Topic;
   isDisabled?: boolean;
 }
 
-const TopicNode = ({ topic, isDisabled = true }: TopicProps) => {
+const TopicNode = ({ topic, isDisabled = false }: TopicProps) => {
   const { width } = useWindowDimensions();
   const itemWidth = width / 3 - 10;
   const theme = getTheme();
@@ -55,16 +57,22 @@ const TopicNode = ({ topic, isDisabled = true }: TopicProps) => {
               borderColor: Colors[theme].background,
             },
           ]}
-        >
-          
-        </View>
+        ></View>
       </View>
       <Text
         style={[Title.Item, { color: Colors[theme].neutral[900] }, styles.text]}
       >
         {topic.title}
       </Text>
-      <Image source={{ uri: topic.imageUri }} style={styles.image} resizeMode={'contain'}/>
+
+      {
+        topic.icon ? 
+        (<S3Image
+        imgKey={topic.icon}
+        level={"public"}
+        style={styles.image}
+        resizeMode={"contain"}
+      />): <FontAwesome name="question" size={80} color="black" style={styles.image}/>}
     </Pressable>
   );
 };

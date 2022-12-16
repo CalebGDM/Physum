@@ -16,11 +16,11 @@ type UserLesson = {
 type Topic = {
     id: string,
     title: string,
-    imageUri: string,
+    icon: string,
     level: number,
     progress: number,
     info?: string,
-    resources?: ResourceItem[],
+    Resources?: ResourceItem[],
 }
 
 type ResourceItem = {

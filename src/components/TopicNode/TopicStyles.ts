@@ -29,7 +29,7 @@ export const styles = StyleSheet.create({
         width: '55%',
         aspectRatio: 1,
         position: 'absolute',
-        top: 20,
+        top: 25,
         
     },
     text: {

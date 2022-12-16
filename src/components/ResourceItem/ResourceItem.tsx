@@ -4,15 +4,16 @@ import { FontAwesome } from "@expo/vector-icons";
 import { Title } from "../../constants/Texts";
 import Colors from "../../constants/Colors";
 import * as WebBrowser from "expo-web-browser";
+import { Exersice, Resource } from "../../models";
 
 interface ResourceItemProps {
-  resource: ResourceItem;
+  resource: Resource | Exersice;
   index: number;
 }
 
 const ResourceItem = ({ resource, index }: ResourceItemProps) => {
   const onResourcePressed = () => {
-    WebBrowser.openBrowserAsync(resource.url);
+    WebBrowser.openBrowserAsync(resource.Url);
   };
   return (
     <View style={[styles.container, { marginBottom: 20 }]}>
@@ -32,11 +33,16 @@ const ResourceItem = ({ resource, index }: ResourceItemProps) => {
           </>
         )}
 
-        <Text style={[Title.Section]}>{resource.title}</Text>
+        <Text style={[Title.Section, { width: "80%" }]}>
+          {resource.Title || resource.title}
+        </Text>
       </View>
-      <TouchableOpacity onPress={onResourcePressed}>
-        <FontAwesome name="share-square-o" size={30} color="black" />
-      </TouchableOpacity>
+
+      {resource.Url && (
+        <TouchableOpacity onPress={onResourcePressed}>
+          <FontAwesome name="share-square-o" size={30} color="black" />
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
