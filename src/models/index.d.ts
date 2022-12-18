@@ -6,6 +6,70 @@ import { LazyLoading, LazyLoadingDisabled, AsyncCollection, AsyncItem } from "@a
 
 
 
+type EagerExersice = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Exersice, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly title: string;
+  readonly url?: string | null;
+  readonly topicID: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyExersice = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Exersice, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly title: string;
+  readonly url?: string | null;
+  readonly topicID: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Exersice = LazyLoading extends LazyLoadingDisabled ? EagerExersice : LazyExersice
+
+export declare const Exersice: (new (init: ModelInit<Exersice>) => Exersice) & {
+  copyOf(source: Exersice, mutator: (draft: MutableModel<Exersice>) => MutableModel<Exersice> | void): Exersice;
+}
+
+type EagerResource = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Resource, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly title: string;
+  readonly url?: string | null;
+  readonly topicID: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyResource = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Resource, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly title: string;
+  readonly url?: string | null;
+  readonly topicID: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Resource = LazyLoading extends LazyLoadingDisabled ? EagerResource : LazyResource
+
+export declare const Resource: (new (init: ModelInit<Resource>) => Resource) & {
+  copyOf(source: Resource, mutator: (draft: MutableModel<Resource>) => MutableModel<Resource> | void): Resource;
+}
+
 type EagerQuizResult = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<QuizResult, 'id'>;
@@ -54,7 +118,7 @@ type EagerUserTopicProgress = {
   readonly id: string;
   readonly sub: string;
   readonly completedResources: string[];
-  readonly completedExercises?: string[] | null;
+  readonly completedExercises: string[];
   readonly progress: number;
   readonly isCompleted?: boolean | null;
   readonly topicID: string;
@@ -70,7 +134,7 @@ type LazyUserTopicProgress = {
   readonly id: string;
   readonly sub: string;
   readonly completedResources: string[];
-  readonly completedExercises?: string[] | null;
+  readonly completedExercises: string[];
   readonly progress: number;
   readonly isCompleted?: boolean | null;
   readonly topicID: string;
@@ -82,38 +146,6 @@ export declare type UserTopicProgress = LazyLoading extends LazyLoadingDisabled 
 
 export declare const UserTopicProgress: (new (init: ModelInit<UserTopicProgress>) => UserTopicProgress) & {
   copyOf(source: UserTopicProgress, mutator: (draft: MutableModel<UserTopicProgress>) => MutableModel<UserTopicProgress> | void): UserTopicProgress;
-}
-
-type EagerExersice = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Exersice, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly title: string;
-  readonly url?: string | null;
-  readonly topicID: string;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-}
-
-type LazyExersice = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Exersice, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly title: string;
-  readonly url?: string | null;
-  readonly topicID: string;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-}
-
-export declare type Exersice = LazyLoading extends LazyLoadingDisabled ? EagerExersice : LazyExersice
-
-export declare const Exersice: (new (init: ModelInit<Exersice>) => Exersice) & {
-  copyOf(source: Exersice, mutator: (draft: MutableModel<Exersice>) => MutableModel<Exersice> | void): Exersice;
 }
 
 type EagerLesson = {
@@ -162,11 +194,11 @@ type EagerTopic = {
   readonly icon?: string | null;
   readonly level: number;
   readonly info: string;
-  readonly Resources?: (Resource | null)[] | null;
-  readonly Exercises?: (Exersice | null)[] | null;
   readonly Quiz?: Quiz | null;
   readonly lessonID: string;
   readonly UserTopicProgresses?: (UserTopicProgress | null)[] | null;
+  readonly Resources?: (Resource | null)[] | null;
+  readonly Exersices?: (Exersice | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly topicQuizId?: string | null;
@@ -182,11 +214,11 @@ type LazyTopic = {
   readonly icon?: string | null;
   readonly level: number;
   readonly info: string;
-  readonly Resources: AsyncCollection<Resource>;
-  readonly Exercises: AsyncCollection<Exersice>;
   readonly Quiz: AsyncItem<Quiz | undefined>;
   readonly lessonID: string;
   readonly UserTopicProgresses: AsyncCollection<UserTopicProgress>;
+  readonly Resources: AsyncCollection<Resource>;
+  readonly Exersices: AsyncCollection<Exersice>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly topicQuizId?: string | null;
@@ -196,38 +228,6 @@ export declare type Topic = LazyLoading extends LazyLoadingDisabled ? EagerTopic
 
 export declare const Topic: (new (init: ModelInit<Topic>) => Topic) & {
   copyOf(source: Topic, mutator: (draft: MutableModel<Topic>) => MutableModel<Topic> | void): Topic;
-}
-
-type EagerResource = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Resource, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly Title: string;
-  readonly Url?: string | null;
-  readonly topicID: string;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-}
-
-type LazyResource = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Resource, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly Title: string;
-  readonly Url?: string | null;
-  readonly topicID: string;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-}
-
-export declare type Resource = LazyLoading extends LazyLoadingDisabled ? EagerResource : LazyResource
-
-export declare const Resource: (new (init: ModelInit<Resource>) => Resource) & {
-  copyOf(source: Resource, mutator: (draft: MutableModel<Resource>) => MutableModel<Resource> | void): Resource;
 }
 
 type EagerQuiz = {

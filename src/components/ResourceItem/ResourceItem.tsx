@@ -9,16 +9,19 @@ import { Exersice, Resource } from "../../models";
 interface ResourceItemProps {
   resource: Resource | Exersice;
   index: number;
+  onComplete?: (resource: Resource | Exersice) => void;
+  isCompleted?: boolean;
 }
 
-const ResourceItem = ({ resource, index }: ResourceItemProps) => {
+const ResourceItem = ({ resource, index, onComplete = () => {}, isCompleted = false }: ResourceItemProps) => {
   const onResourcePressed = () => {
-    WebBrowser.openBrowserAsync(resource.Url);
+    WebBrowser.openBrowserAsync(resource.url);
+    onComplete(resource)
   };
   return (
     <View style={[styles.container, { marginBottom: 20 }]}>
       <View style={styles.container}>
-        {resource.completed ? (
+        {isCompleted ? (
           <FontAwesome
             style={{ marginRight: 15 }}
             name="check"
@@ -34,11 +37,11 @@ const ResourceItem = ({ resource, index }: ResourceItemProps) => {
         )}
 
         <Text style={[Title.Section, { width: "80%" }]}>
-          {resource.Title || resource.title}
+          {resource.title}
         </Text>
       </View>
 
-      {resource.Url && (
+      {resource.url && (
         <TouchableOpacity onPress={onResourcePressed}>
           <FontAwesome name="share-square-o" size={30} color="black" />
         </TouchableOpacity>

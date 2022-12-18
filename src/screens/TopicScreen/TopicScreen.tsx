@@ -6,24 +6,26 @@ import Colors from "../../constants/Colors";
 import { getTheme } from "../../components/Themed";
 import { Styles } from "./TopicScreenStyle";
 import { Title } from "../../constants/Texts";
-import topicInfo from "../../../assets/data/topicInfo";
+
 import Markdown from "react-native-markdown-display";
 import { getCurrTheme, MarkdownStyles } from "../../constants/MarkdownStyles";
 import CustomButtom from "../../components/CustomButtom";
 import useApplyHeaderWorkaround from "../../../hooks/useAplyHeaderWorks";
 import SectionSign from "../../components/SectionSign";
 import ResourceItem from "../../components/ResourceItem";
-import { DataStore } from "aws-amplify";
+import { Auth, DataStore } from "aws-amplify";
 import { Exersice, Resource, Topic, UserTopicProgress } from "../../models";
+import LoadingScreen from "../LoadingScreen";
 
 const TopicScreen = () => {
   const route = useRoute();
   const navigation = useNavigation();
   const topicId = route?.params?.id;
   const [resources, setResources] = useState<Resource[]>([]);
-  const [exercise, setExercise] = useState<Exersice[]>([]);
+  const [exercises, setExercises] = useState<Exersice[]>([]);
   const [topic, setTopic] = useState<Topic>();
-  const [userTopicProgress, setUserTopicProgress] = useState<UserTopicProgress>()
+  const [userTopicProgress, setUserTopicProgress] =
+    useState<UserTopicProgress>();
 
   useApplyHeaderWorkaround(navigation.setOptions);
 
@@ -32,45 +34,119 @@ const TopicScreen = () => {
   }, [topicId]);
 
   useEffect(() => {
-    DataStore.query(Resource)
-      .then((resources) => resources.filter((r) => r.topicID == topicId))
-      .then(setResources);
+    if (topic) {
+      navigation.setOptions({ title: topic.title });
+    }
+    const fetchTopicDetails = async () => {
+      if (!topic) {
+        return;
+      }
+      const resources = await DataStore.query(Resource);
+      setResources(resources.filter((r) => r.topicID == topicId));
 
-    DataStore.query(Exersice)
-      .then((exercises) => exercises.filter((e) => e.topicID == topicId))
-      .then(setExercise);
+      const exercises = await DataStore.query(Exersice);
+      setExercises(exercises.filter((e) => e.topicID == topicId));
+
+      const userData = await Auth.currentAuthenticatedUser();
+      const userTopicProgresses = await DataStore.query(UserTopicProgress);
+      const userProgress = userTopicProgresses.find(
+        (tp) => tp.topicID == topic.id && tp.sub == userData?.attributes.sub
+      );
+      if (userProgress) {
+        setUserTopicProgress(userProgress);
+        console.log('pito')
+      }else{
+        console.log('nueve')
+        const newUserProgress = await DataStore.save(
+          new UserTopicProgress({
+            sub: userData?.attributes.sub,
+            completedResources: [],
+            completedExercises: [],
+            progress: 0,
+            topicID: topic.id,
+          })
+        );
+        
+        setUserTopicProgress(newUserProgress);
+        console.log('poto')
+      }
+        
+      
+    };
+
+    fetchTopicDetails();
   }, [topic]);
 
-  const theme = getTheme();
-  navigation.setOptions({ title: topic?.title });
+
   const onGoToQuizPressed = () => {
     if (topic?.topicQuizId) {
       navigation.navigate("Quiz", { id: topic?.topicQuizId });
     }
   };
-  console.log(topic);
+  console.log(userTopicProgress)
+
+  const onResourceCompleted = async (resource: Resource) => {
+    if(!userTopicProgress){
+      return;
+    }
+    // Recalculate progress
+    const progressUpdated = await DataStore.save(UserTopicProgress.copyOf(userTopicProgress, updated => {
+      if(!updated.completedResources?.includes(resource.id)){
+        updated.completedResources.push(resource.id)
+        const progress = (userTopicProgress.completedResources.length + userTopicProgress.completedExercises.length + 1) / (resources.length + exercises.length)
+        updated.progress = progress
+        
+      }
+      
+    }))
+    
+    setUserTopicProgress(progressUpdated)
+  }
+
+  const onExercieCompleted = async (exercise: Exersice) => {
+    if(!userTopicProgress){
+      return;
+    }
+    // Recalculate progress
+    const progressUpdated = await DataStore.save(UserTopicProgress.copyOf(userTopicProgress, updated => {
+      if(!updated.completedExercises?.includes(exercise.id)){
+        updated.completedExercises.push(exercise.id)
+        const progress = (userTopicProgress.completedResources.length + userTopicProgress.completedExercises.length + 1) / (resources.length + exercises.length)
+        updated.progress = progress
+        
+      }
+      
+    }))
+    
+    setUserTopicProgress(progressUpdated)
+  }
+
+  if (!userTopicProgress || !topic) {
+    return <LoadingScreen/>
+  }
   return (
     <ScrollView
-      style={[{ backgroundColor: Colors[theme].background }]}
+      style={[{ backgroundColor: Colors.light.background }]}
       showsVerticalScrollIndicator={false}
+      
     >
       <View style={Styles.content}>
         <Markdown style={MarkdownStyles}>{topic?.info}</Markdown>
         {topic?.Resources && <SectionSign label="Recuros extra" />}
 
         {resources?.map((resource, index) => (
-          <ResourceItem resource={resource} index={index} key={resource.id} />
+          <ResourceItem resource={resource} index={index} key={resource.id} onComplete={onResourceCompleted} isCompleted={userTopicProgress.completedResources.includes(resource.id)}/>
         ))}
 
-        {topic?.Exercises && <SectionSign label="Ejercisios de práctica" />}
+        {topic?.Exersices && <SectionSign label="Ejercisios de práctica" />}
 
-        {exercise?.map((resource, index) => (
-          <ResourceItem resource={resource} index={index} key={resource.id} />
+        {exercises?.map((resource, index) => (
+          <ResourceItem resource={resource} index={index} key={resource.id} onComplete={onExercieCompleted} isCompleted={userTopicProgress.completedExercises?.includes(resource.id)}/>
         ))}
         {topic?.topicQuizId && (
           <CustomButtom
             text="Responder Quiz"
-            color={Colors[theme].primary[500]}
+            color={Colors.light.primary[500]}
             onPress={onGoToQuizPressed}
           />
         )}

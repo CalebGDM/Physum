@@ -5,7 +5,7 @@ import {
   useWindowDimensions,
   Pressable,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { styles } from "./TopicStyles";
 import { getTheme } from "../Themed";
 import Colors from "../../constants/Colors";
@@ -15,6 +15,8 @@ import CircularProgress from "../CircularProgress";
 import { useNavigation } from "@react-navigation/native";
 import { S3Image } from "aws-amplify-react-native";
 import { FontAwesome } from "@expo/vector-icons";
+import { Auth, DataStore } from "aws-amplify";
+import { UserTopicProgress } from "../../models";
 
 interface TopicProps {
   topic: Topic;
@@ -24,12 +26,28 @@ interface TopicProps {
 const TopicNode = ({ topic, isDisabled = false }: TopicProps) => {
   const { width } = useWindowDimensions();
   const itemWidth = width / 3 - 10;
-  const theme = getTheme();
   const navigation = useNavigation();
+  const [progress, setProgress] = useState(0)
+
+  useEffect(() => {
+    (async () => {
+      const userData = await Auth.currentAuthenticatedUser();
+      const userTopicProgresses = await DataStore.query(UserTopicProgress)
+      const userProgress = userTopicProgresses.find(
+        (tp) => tp.topicID == topic.id && tp.sub == userData?.attributes.sub
+      );
+      console.log(userTopicProgresses)
+      if(userProgress){
+
+        setProgress(userProgress.progress || 0)
+      }
+    })();
+  }, [topic]);
 
   const onPress = () => {
     navigation.navigate("Topic", { id: topic.id });
   };
+  
   return (
     <Pressable
       onPress={onPress}
@@ -39,40 +57,47 @@ const TopicNode = ({ topic, isDisabled = false }: TopicProps) => {
       <View
         style={[
           styles.progress,
-          { backgroundColor: Colors[theme].neutral[400] },
+          { backgroundColor: Colors.light.neutral[400] },
         ]}
       >
         <CircularProgress
           size={itemWidth}
           strokeWidth={10}
-          progress={topic.progress}
+          progress={progress}
         />
         <View
           style={[
             styles.circle,
             {
               backgroundColor: isDisabled
-                ? Colors[theme].neutral[300]
-                : Colors[theme].primary[200],
-              borderColor: Colors[theme].background,
+                ? Colors.light.neutral[300]
+                : Colors.light.primary[200],
+              borderColor: Colors.light.background,
             },
           ]}
         ></View>
       </View>
       <Text
-        style={[Title.Item, { color: Colors[theme].neutral[900] }, styles.text]}
+        style={[Title.Item, { color: Colors.light.neutral[900] }, styles.text]}
       >
         {topic.title}
       </Text>
 
-      {
-        topic.icon ? 
-        (<S3Image
-        imgKey={topic.icon}
-        level={"public"}
-        style={styles.image}
-        resizeMode={"contain"}
-      />): <FontAwesome name="question" size={80} color="black" style={styles.image}/>}
+      {topic.icon ? (
+        <S3Image
+          imgKey={topic.icon}
+          level={"public"}
+          style={styles.image}
+          resizeMode={"contain"}
+        />
+      ) : (
+        <FontAwesome
+          name="question"
+          size={80}
+          color="black"
+          style={styles.image}
+        />
+      )}
     </Pressable>
   );
 };
