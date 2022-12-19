@@ -20,21 +20,25 @@ import ProgressBar from "../../components/ProgressBar";
 import { LessonStackParamList, RootStackParamList } from "../../../types";
 import Animated, { SlideInDown, SlideOutDown } from "react-native-reanimated";
 import useApplyHeaderWorkaround from "../../../hooks/useAplyHeaderWorks";
-import { DataStore } from "aws-amplify";
-import { Quiz, QuizQuestion } from "../../models";
+import { Auth, DataStore } from "aws-amplify";
+import { Quiz, QuizQuestion, QuizResult } from "../../models";
 import LoadingScreen from "../LoadingScreen";
 
 const QuizScreen = ({ navigation, route }: RootStackParamList<"Quiz">) => {
   const [quiz, setQuiz] = useState<Quiz | undefined>(undefined);
   const [questionIndex, setQuestionIndex] = useState(0);
   const [questions, setQuestions] = useState<QuizQuestion[]>([]);
-  const question = questions[questionIndex]
+  const question = questions[questionIndex];
   const [selectedAnswers, setSelectedAnswers] = useState<string[]>([]);
   useApplyHeaderWorkaround(navigation.setOptions);
   const [answeredCorrectly, setAnswerCorrectly] = useState<boolean | undefined>(
     undefined
   );
   const [numberOfCorrectAnswers, setNumberOfCorrectAnswers] = useState(0);
+  const [wrongAnswersIDs, setWorngAnswersIds] = useState<string[]>([]);
+  const [previousResoult, setPreviousResults] = useState<
+    QuizResult | undefined
+  >();
   const quizId = route.params.id;
 
   useEffect(() => {
@@ -44,24 +48,64 @@ const QuizScreen = ({ navigation, route }: RootStackParamList<"Quiz">) => {
 
   useEffect(() => {
     if (quiz) {
-      DataStore.query(QuizQuestion)
-        .then((questions) => questions.filter((q) => q.quizID == quiz.id))
-        .then(setQuestions);
+      (async () => {
+        const questions = await DataStore.query(QuizQuestion);
+        setQuestions(questions.filter((q) => q.quizID == quiz.id));
+
+        const userData = await Auth.currentAuthenticatedUser();
+        const quizResults = await DataStore.query(QuizResult);
+
+        const myQuizResult = quizResults.filter(
+          (qr) => qr.quizID == quiz.id && qr.sub == userData?.attributes.sub
+        );
+
+        const myPreviousResult = myQuizResult.reduce(
+          (acc: undefined | QuizResult, curr) =>
+            !acc || curr.attemps > acc.attemps ? curr : acc,
+          undefined
+        );
+        setPreviousResults(myPreviousResult);
+
+        // obtener resultados anteriores
+      })();
     }
   }, [quiz]);
   console.log(questions);
 
   useEffect(() => {
-    if (questionIndex == questions.length && questionIndex > 0) {
-      navigation.navigate("EndQuiz", {
-        numberOfQuestions: questions.length,
-        numberOfCorrectAnswers: numberOfCorrectAnswers,
-      });
-      return;
+    if (answeredCorrectly == false && !wrongAnswersIDs.includes(question.id)) {
+      setWorngAnswersIds([...wrongAnswersIDs, question.id]);
     }
-    
-    setAnswerCorrectly(undefined);
-    setSelectedAnswers([]);
+  }, [answeredCorrectly]);
+
+  useEffect(() => {
+    (async () => {
+      if (questionIndex == questions.length && questionIndex > 0) {
+        const userData = await Auth.currentAuthenticatedUser();
+        if (quiz && userData) {
+          DataStore.save(
+            new QuizResult({
+              sub: userData?.attributes.sub,
+              nofQuestions: questions.length,
+              nofCorretAnswers: numberOfCorrectAnswers,
+              precentage: numberOfCorrectAnswers / questions.length,
+              failedQuestions: wrongAnswersIDs,
+              attemps: previousResoult ? previousResoult.attemps + 1 : 1,
+              quizID: quiz?.id,
+            })
+          );
+        }
+
+        navigation.navigate("EndQuiz", {
+          numberOfQuestions: questions.length,
+          numberOfCorrectAnswers: numberOfCorrectAnswers,
+        });
+        return;
+      }
+
+      setAnswerCorrectly(undefined);
+      setSelectedAnswers([]);
+    })();
   }, [questionIndex]);
 
   const isButtonDisabled = selectedAnswers.length == 0;
@@ -104,7 +148,7 @@ const QuizScreen = ({ navigation, route }: RootStackParamList<"Quiz">) => {
   };
 
   if (!question) {
-    return <LoadingScreen/>
+    return <LoadingScreen />;
   }
 
   return (
