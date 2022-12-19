@@ -20,20 +20,25 @@ const TopicsScreen = () => {
 
   const [levels, setLevels] = useState<Topic[][]>([]);
   const [currentLevel, setCurrentLevel] = useState(0)
+  const [lessonId, setLessonID] = useState()
   console.log('lol')
-  console.log(route?.params?.id)
+  console.log(lessonId)
 
+  const fetchTopics = async () => {
+    const topics = await (await DataStore.query(Topic)).filter((topic) => topic.lessonID == route?.params?.id);
+    
+    const _levels = groupByLevels(topics);
+    setLevels(_levels);
+    
+  };
 
   useEffect(() => {
-    const fetchTopics = async () => {
-      const topics = await (await DataStore.query(Topic)).filter((topic) => topic.lessonID == route?.params?.id);
-      
-      const _levels = groupByLevels(topics);
-      setLevels(_levels);
-      
-    };
     fetchTopics()
   }, []);
+
+  useEffect(() => {
+    fetchTopics()
+  },[route?.params?.id])
 
   console.log(levels)
 
