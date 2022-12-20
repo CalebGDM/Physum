@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native"
+import Colors from "../../constants/Colors"
 
 export const styles = StyleSheet.create({
     container: {
@@ -26,13 +27,21 @@ export const styles = StyleSheet.create({
         borderWidth: 3,
     },
     image: {
-        width: '55%',
+        width: '60%',
         aspectRatio: 1,
         position: 'absolute',
-        top: 25,
-        
+     
     },
     text: {
         marginTop: 10
+    },
+    percentage: {
+        position: 'absolute',
+        borderColor: Colors.light.base.white,
+        borderWidth: 3,
+        bottom: -7,
+        right: -20,
+        padding: 7,
+        borderRadius: 50
     }
 })

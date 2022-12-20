@@ -1,27 +1,5 @@
-type Lesson = {
-    id: string,
-    lessonName: string,
-    color: string,
-    imageUri: string
-}
+import { QuizResult, Topic } from "../models";
 
-type UserLesson = {
-    id: string,
-    lessonName: string,
-    color: string,
-    imageUri: string,
-    progress: number,
-}
-
-type Topic = {
-    id: string,
-    title: string,
-    icon: string,
-    level: number,
-    progress: number,
-    info?: string,
-    Resources?: ResourceItem[],
-}
 
 type ResourceItem = {
     id: string,
@@ -29,3 +7,5 @@ type ResourceItem = {
     url: string,
     completed?: boolean
 }
+
+export type TopicWithResult = Topic & { quizResult?: QuizResult, isQuizPassed?: boolean };
