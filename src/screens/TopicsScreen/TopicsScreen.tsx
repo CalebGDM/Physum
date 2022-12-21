@@ -1,5 +1,5 @@
 import { View, Text, FlatList, ActivityIndicator } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TopicNode from "../../components/TopicNode";
 import TopicNodesRow from "../../components/TopicNodesRow";
 import { GStyles } from "../../constants/GeneralStyles";
@@ -16,7 +16,14 @@ const TopicsScreen = () => {
 
   useApplyHeaderWorkaround(navigation.setOptions);
   const { levels, currentLevel, setLessonID } = useModule();
-  setLessonID(lessonId)
+  
+
+  useEffect(() => {
+    if(!lessonId || lessonId == ""){
+      return
+    }
+    setLessonID(lessonId)
+  },[lessonId])
 
   if (!levels || !currentLevel) {
     <ActivityIndicator />;

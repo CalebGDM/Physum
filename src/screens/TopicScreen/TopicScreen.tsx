@@ -13,7 +13,7 @@ import CustomButtom from "../../components/CustomButtom";
 import useApplyHeaderWorkaround from "../../../hooks/useAplyHeaderWorks";
 import SectionSign from "../../components/SectionSign";
 import ResourceItem from "../../components/ResourceItem";
-import { Auth, DataStore } from "aws-amplify";
+import { Analytics, Auth, DataStore } from "aws-amplify";
 import { Exersice, Resource, Topic, UserTopicProgress } from "../../models";
 import LoadingScreen from "../LoadingScreen";
 import { useModule } from "../../context/ModuleContext";
@@ -30,6 +30,15 @@ const TopicScreen = () => {
   const { updateTopicProgress } = useModule();
 
   useApplyHeaderWorkaround(navigation.setOptions);
+
+  useEffect(() => {
+    if (topicId) {
+      Analytics.record({
+        name: "topicOpened",
+        attributes: { topicId: topicId },
+      });
+    }
+  }, [topicId]);
 
   useEffect(() => {
     DataStore.query(Topic, topicId).then(setTopic);

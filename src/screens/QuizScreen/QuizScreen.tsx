@@ -20,7 +20,7 @@ import ProgressBar from "../../components/ProgressBar";
 import { LessonStackParamList, RootStackParamList } from "../../../types";
 import Animated, { SlideInDown, SlideOutDown } from "react-native-reanimated";
 import useApplyHeaderWorkaround from "../../../hooks/useAplyHeaderWorks";
-import { Auth, DataStore } from "aws-amplify";
+import { Analytics, Auth, DataStore } from "aws-amplify";
 import { Quiz, QuizQuestion, QuizResult } from "../../models";
 import LoadingScreen from "../LoadingScreen";
 
@@ -41,6 +41,14 @@ const QuizScreen = ({ navigation, route }: RootStackParamList<"Quiz">) => {
   >();
   const quizId = route.params.id;
 
+  useEffect(() => {
+    if (quizId) {
+      Analytics.record({
+        name: "quizOpened",
+        attributes: { quizId: quizId },
+      });
+    }
+  }, [quizId]);
   useEffect(() => {
     DataStore.query(Quiz, quizId).then(setQuiz);
   }, [quizId]);
@@ -83,18 +91,32 @@ const QuizScreen = ({ navigation, route }: RootStackParamList<"Quiz">) => {
       if (questionIndex == questions.length && questionIndex > 0) {
         const userData = await Auth.currentAuthenticatedUser();
         if (quiz && userData) {
+          const precentage = numberOfCorrectAnswers / questions.length
+          const attemps = previousResoult ? previousResoult.attemps + 1 : 1
           DataStore.save(
             new QuizResult({
               sub: userData?.attributes.sub,
               nofQuestions: questions.length,
               nofCorretAnswers: numberOfCorrectAnswers,
-              precentage: numberOfCorrectAnswers / questions.length,
+              precentage,
               failedQuestions: wrongAnswersIDs,
-              attemps: previousResoult ? previousResoult.attemps + 1 : 1,
+              attemps,
               quizID: quiz?.id,
             })
           );
+          Analytics.record({
+            name: "quisFinished",
+            attributes: {
+              quizId: quizId,
+            },
+            metrics: {
+              percentage: precentage,
+              attemp: attemps,
+            }
+          });
         }
+
+       
 
         navigation.navigate("EndQuiz", {
           numberOfQuestions: questions.length,

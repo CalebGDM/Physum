@@ -5,6 +5,7 @@ import { Title } from "../../constants/Texts";
 import Colors from "../../constants/Colors";
 import * as WebBrowser from "expo-web-browser";
 import { Exersice, Resource } from "../../models";
+import { Analytics } from "aws-amplify";
 
 interface ResourceItemProps {
   resource: Resource | Exersice;
@@ -17,6 +18,10 @@ const ResourceItem = ({ resource, index, onComplete = () => {}, isCompleted = fa
   const onResourcePressed = () => {
     WebBrowser.openBrowserAsync(resource.url);
     onComplete(resource)
+    Analytics.record({
+      name: resource instanceof Exersice ? "exerciseOpened" :  "resourceOpened",
+      attributes: {resourceId: resource.id}
+    })
   };
   return (
     <View style={[styles.container, { marginBottom: 20 }]}>

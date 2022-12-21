@@ -17,6 +17,12 @@
       },
       "storage": {
         "s3physumstoraged4e548f0": {}
+      },
+      "api": {
+        "Physum": {}
+      },
+      "analytics": {
+        "physum": {}
       }
     }
   }
