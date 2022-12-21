@@ -15,7 +15,8 @@ const LessonPreview = ({lesson}: LessonPreviewNode) => {
 
   const onLessonPressed = () => {
     //navigation.navigate('LessonsStack',{screen: 'Topics'},{ initial: false, params:{id: lesson.id}})
-    navigation.navigate("LessonsStack", {screen: 'Topics',initial: false,  params:{id: lesson.id}})
+    //@ts-expect-error
+    navigation.navigate("LessonsStack", {screen: 'Topics',initial: false,  params:{id: lesson.id, lessonName: lesson.lessonName}})
   }
   return (
     <TouchableOpacity style={[styles.container, {backgroundColor: lesson.color}]} onPress={onLessonPressed}>

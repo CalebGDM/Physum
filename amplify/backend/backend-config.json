@@ -66,5 +66,13 @@
       "service": "Pinpoint",
       "providerPlugin": "awscloudformation"
     }
+  },
+  "function": {
+    "DailyReminderNotification": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": []
+    }
   }
 }

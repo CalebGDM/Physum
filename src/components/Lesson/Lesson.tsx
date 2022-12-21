@@ -14,6 +14,7 @@ const LessonComponent = ({ lesson }: LessonPorps) => {
   const onLessonPressed = () => {
     navigation.navigate("Topics", {
       id: lesson.id,
+      lessonName: lesson.lessonName
     });
   };
 

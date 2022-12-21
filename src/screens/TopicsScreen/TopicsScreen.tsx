@@ -8,13 +8,17 @@ import useApplyHeaderWorkaround from "../../../hooks/useAplyHeaderWorks";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
 import { useModule } from "../../context/ModuleContext";
+import { Analytics } from "aws-amplify";
+import { Title } from "../../constants/Texts";
 
 const TopicsScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const lessonId = route?.params?.id;
+  const lessonName = route?.params?.lessonName;
 
   useApplyHeaderWorkaround(navigation.setOptions);
+  navigation.setOptions({title: lessonName})
   const { levels, currentLevel, setLessonID } = useModule();
   
 
@@ -22,6 +26,10 @@ const TopicsScreen = () => {
     if(!lessonId || lessonId == ""){
       return
     }
+    Analytics.record({
+      name: 'lessonOpened',
+      attributes: {lessonId: lessonId}
+    })
     setLessonID(lessonId)
   },[lessonId])
 
