@@ -7,44 +7,32 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { styles } from "./TopicStyles";
-import { getTheme } from "../Themed";
 import Colors from "../../constants/Colors";
 import { Title } from "../../constants/Texts";
-import { Svg, Circle } from "react-native-svg";
 import CircularProgress from "../CircularProgress";
 import { useNavigation } from "@react-navigation/native";
 // @ts-expect-error
 import { S3Image } from "aws-amplify-react-native";
 import { FontAwesome } from "@expo/vector-icons";
-import { Auth, DataStore } from "aws-amplify";
-import { UserTopicProgress } from "../../models";
 import { TopicWithResult } from "../../types/models";
+import { useModule } from "../../context/ModuleContext";
 
 interface TopicProps {
   topic: TopicWithResult;
   isDisabled?: boolean;
   hasThree?: boolean;
+
 }
+
+
 
 const TopicNode = ({ topic, isDisabled = false, hasThree = false }: TopicProps) => {
   const { width } = useWindowDimensions();
   const itemWidth = width / 3 - 10;
   const navigation = useNavigation();
   const [progress, setProgress] = useState(0);
-
-  useEffect(() => {
-    (async () => {
-      const userData = await Auth.currentAuthenticatedUser();
-      const userTopicProgresses = await DataStore.query(UserTopicProgress);
-      const userProgress = userTopicProgresses.find(
-        (tp) => tp.topicID == topic.id && tp.sub == userData?.attributes.sub
-      );
   
-      if (userProgress) {
-        setProgress(userProgress.progress || 0);
-      }
-    })();
-  }, [topic]);
+  
 
   const onPress = () => {
     navigation.navigate("Topic", { id: topic.id });
@@ -66,7 +54,7 @@ const TopicNode = ({ topic, isDisabled = false, hasThree = false }: TopicProps) 
         <CircularProgress
           size={itemWidth}
           strokeWidth={10}
-          progress={progress}
+          progress={topic.progress?.progress || 0}
         />
         <View
           style={[

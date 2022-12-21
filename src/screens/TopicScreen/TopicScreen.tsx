@@ -16,6 +16,7 @@ import ResourceItem from "../../components/ResourceItem";
 import { Auth, DataStore } from "aws-amplify";
 import { Exersice, Resource, Topic, UserTopicProgress } from "../../models";
 import LoadingScreen from "../LoadingScreen";
+import { useModule } from "../../context/ModuleContext";
 
 const TopicScreen = () => {
   const route = useRoute();
@@ -26,6 +27,7 @@ const TopicScreen = () => {
   const [topic, setTopic] = useState<Topic>();
   const [userTopicProgress, setUserTopicProgress] =
     useState<UserTopicProgress>();
+  const { updateTopicProgress } = useModule();
 
   useApplyHeaderWorkaround(navigation.setOptions);
 
@@ -54,9 +56,9 @@ const TopicScreen = () => {
       );
       if (userProgress) {
         setUserTopicProgress(userProgress);
-        console.log('pito')
-      }else{
-        console.log('nueve')
+        console.log("pito");
+      } else {
+        console.log("nueve");
         const newUserProgress = await DataStore.save(
           new UserTopicProgress({
             sub: userData?.attributes.sub,
@@ -66,82 +68,106 @@ const TopicScreen = () => {
             topicID: topic.id,
           })
         );
-        
+
         setUserTopicProgress(newUserProgress);
-        console.log('poto')
+        console.log("poto");
       }
-        
-      
     };
 
     fetchTopicDetails();
   }, [topic]);
-
 
   const onGoToQuizPressed = () => {
     if (topic?.topicQuizId) {
       navigation.navigate("Quiz", { id: topic?.topicQuizId });
     }
   };
-  console.log(userTopicProgress)
+  console.log(userTopicProgress);
 
   const onResourceCompleted = async (resource: Resource) => {
-    if(!userTopicProgress){
+    if (
+      !userTopicProgress ||
+      userTopicProgress.completedResources.includes(resource.id)
+    ) {
       return;
     }
     // Recalculate progress
-    const progressUpdated = await DataStore.save(UserTopicProgress.copyOf(userTopicProgress, updated => {
-      if(!updated.completedResources?.includes(resource.id)){
-        updated.completedResources.push(resource.id)
-        const progress = (userTopicProgress.completedResources.length + userTopicProgress.completedExercises.length + 1) / (resources.length + exercises.length)
-        updated.progress = progress
-        
-      }
-      
-    }))
-    
-    setUserTopicProgress(progressUpdated)
-  }
+    const progressUpdated = await DataStore.save(
+      UserTopicProgress.copyOf(userTopicProgress, (updated) => {
+        updated.completedResources.push(resource.id);
+        const progress =
+          (userTopicProgress.completedResources.length +
+            userTopicProgress.completedExercises.length +
+            1) /
+          (resources.length + exercises.length);
+        updated.progress = progress;
+      })
+    );
+
+    setUserTopicProgress(progressUpdated);
+    updateTopicProgress(topicId, progressUpdated);
+  };
 
   const onExercieCompleted = async (exercise: Exersice) => {
-    if(!userTopicProgress){
+    if (
+      !userTopicProgress ||
+      userTopicProgress.completedExercises.includes(exercise.id)
+    ) {
       return;
     }
     // Recalculate progress
-    const progressUpdated = await DataStore.save(UserTopicProgress.copyOf(userTopicProgress, updated => {
-      if(!updated.completedExercises?.includes(exercise.id)){
-        updated.completedExercises.push(exercise.id)
-        const progress = (userTopicProgress.completedResources.length + userTopicProgress.completedExercises.length + 1) / (resources.length + exercises.length)
-        updated.progress = progress
-        
-      }
-      
-    }))
-    
-    setUserTopicProgress(progressUpdated)
-  }
+    const progressUpdated = await DataStore.save(
+      UserTopicProgress.copyOf(userTopicProgress, (updated) => {
+        updated.completedExercises.push(exercise.id);
+        const progress =
+          (userTopicProgress.completedResources.length +
+            userTopicProgress.completedExercises.length +
+            1) /
+          (resources.length + exercises.length);
+        updated.progress = progress;
+      })
+    );
+
+    setUserTopicProgress(progressUpdated);
+    updateTopicProgress(topicId, progressUpdated);
+  };
 
   if (!userTopicProgress || !topic) {
-    return <LoadingScreen/>
+    return <LoadingScreen />;
   }
   return (
     <ScrollView
       style={[{ backgroundColor: Colors.light.background }]}
       showsVerticalScrollIndicator={false}
-      
     >
       <View style={Styles.content}>
         <Markdown style={MarkdownStyles}>{topic?.info}</Markdown>
         {topic?.Resources && <SectionSign label="Recuros extra" />}
 
         {resources?.map((resource, index) => (
-          <ResourceItem resource={resource} index={index} key={resource.id} onComplete={onResourceCompleted} isCompleted={userTopicProgress.completedResources.includes(resource.id)}/>
+          <ResourceItem
+            resource={resource}
+            index={index}
+            key={resource.id}
+            onComplete={onResourceCompleted}
+            isCompleted={userTopicProgress.completedResources.includes(
+              resource.id
+            )}
+          />
         ))}
 
         {topic?.Exersices && <SectionSign label="Ejercisios de práctica" />}
 
         {exercises?.map((resource, index) => (
-          <ResourceItem resource={resource} index={index} key={resource.id} onComplete={onExercieCompleted} isCompleted={userTopicProgress.completedExercises?.includes(resource.id)}/>
+          <ResourceItem
+            resource={resource}
+            index={index}
+            key={resource.id}
+            onComplete={onExercieCompleted}
+            isCompleted={userTopicProgress.completedExercises?.includes(
+              resource.id
+            )}
+          />
         ))}
         {topic?.topicQuizId && (
           <CustomButtom
