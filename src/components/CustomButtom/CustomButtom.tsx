@@ -60,7 +60,7 @@ const CustomButtom = ({
               ? textColor
               : disabled
                 ? Colors.light.neutral[300]
-                : Colors[theme].primary[900],
+                : Colors.light.primary[900],
           },
           {
             textAlign: 'center'

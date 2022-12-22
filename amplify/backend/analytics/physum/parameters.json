@@ -1,0 +1,21 @@
+{
+    "appName": "physum",
+    "roleName": "pinpointLambdaRolefab8e5ca",
+    "cloudformationPolicyName": "cloudformationPolicyfab8e5ca",
+    "cloudWatchPolicyName": "cloudWatchPolicyfab8e5ca",
+    "pinpointPolicyName": "pinpointPolicyfab8e5ca",
+    "authPolicyName": "pinpoint_amplify_fab8e5ca",
+    "unauthPolicyName": "pinpoint_amplify_fab8e5ca",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "authRoleArn": {
+        "Fn::GetAtt": [
+            "AuthRole",
+            "Arn"
+        ]
+    }
+}
