@@ -1,43 +1,63 @@
-import { View, Text, FlatList } from 'react-native'
-import React from 'react'
-import TopicNode from '../../components/TopicNode'
-import TopicNodesRow from '../../components/TopicNodesRow'
-import topics from '../../../assets/data/topics'
-import { getCurrentActiveLevel, groupByLevels } from '../../utils/Topics'
-import { getTheme } from '../../components/Themed'
-import { GStyles } from '../../constants/GeneralStyles'
-import Colors from '../../constants/Colors'
-import useApplyHeaderWorkaround from '../../../hooks/useAplyHeaderWorks'
-import { useNavigation } from '@react-navigation/native'
+import { View, Text, FlatList, ActivityIndicator } from "react-native";
+import React, { useEffect, useState } from "react";
+import TopicNode from "../../components/TopicNode";
+import TopicNodesRow from "../../components/TopicNodesRow";
+import { GStyles } from "../../constants/GeneralStyles";
+import Colors from "../../constants/Colors";
+import useApplyHeaderWorkaround from "../../../hooks/useAplyHeaderWorks";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
-
-const levels = groupByLevels(topics)
-const currentLevel = getCurrentActiveLevel(levels)
-console.log(currentLevel)
-
+import { useModule } from "../../context/ModuleContext";
+import { Analytics } from "aws-amplify";
+import { Title } from "../../constants/Texts";
 
 const TopicsScreen = () => {
-  const theme = getTheme()
-  const navigation = useNavigation()
-  useApplyHeaderWorkaround(navigation.setOptions)
+  const navigation = useNavigation();
+  const route = useRoute();
+  const lessonId = route?.params?.id;
+  const lessonName = route?.params?.lessonName;
+
+  useApplyHeaderWorkaround(navigation.setOptions);
+  navigation.setOptions({title: lessonName})
+  const { levels, currentLevel, setLessonID } = useModule();
+  
+
+  useEffect(() => {
+    if(!lessonId || lessonId == ""){
+      return
+    }
+    Analytics.record({
+      name: 'lessonOpened',
+      attributes: {lessonId: lessonId}
+    })
+    setLessonID(lessonId)
+  },[lessonId])
+
+  if (!levels || !currentLevel) {
+    <ActivityIndicator />;
+  }
   return (
-    <View style={[GStyles.screen, {backgroundColor: Colors[theme].background}]}>
+    <View
+      style={[GStyles.screen, { backgroundColor: Colors.light.background }]}
+    >
       <FlatList
         data={levels}
-       
-        renderItem={({item}) =>(
+        renderItem={({ item }) => (
           <TopicNodesRow>
-            {
-              item.map((topic) => (
-                <TopicNode topic={topic} key={topic.id} isDisabled={currentLevel < topic.level}/>
-              ))
-            }
+            {item.map((topic) => (
+              <TopicNode
+                topic={topic}
+                key={topic.id}
+                isDisabled={currentLevel < topic.level}
+                hasThree={item.length == 3}
+              />
+            ))}
           </TopicNodesRow>
         )}
         showsVerticalScrollIndicator={false}
       />
     </View>
-  )
-}
+  );
+};
 
-export default TopicsScreen
+export default TopicsScreen;

@@ -9,5 +9,34 @@ export type AmplifyDependentResourcesAttributes = {
             "AppClientIDWeb": "string",
             "AppClientID": "string"
         }
+    },
+    "api": {
+        "Physum": {
+            "GraphQLAPIKeyOutput": "string",
+            "GraphQLAPIIdOutput": "string",
+            "GraphQLAPIEndpointOutput": "string"
+        }
+    },
+    "storage": {
+        "s3physumstoraged4e548f0": {
+            "BucketName": "string",
+            "Region": "string"
+        }
+    },
+    "analytics": {
+        "physum": {
+            "Region": "string",
+            "Id": "string",
+            "appName": "string"
+        }
+    },
+    "function": {
+        "DailyReminderNotification": {
+            "Name": "string",
+            "Arn": "string",
+            "Region": "string",
+            "LambdaExecutionRole": "string",
+            "CloudWatchEventRule": "string"
+        }
     }
 }

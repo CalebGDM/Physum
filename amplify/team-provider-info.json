@@ -14,6 +14,22 @@
     "categories": {
       "auth": {
         "Physum": {}
+      },
+      "storage": {
+        "s3physumstoraged4e548f0": {}
+      },
+      "api": {
+        "Physum": {}
+      },
+      "analytics": {
+        "physum": {}
+      },
+      "function": {
+        "DailyReminderNotification": {
+          "deploymentBucketName": "amplify-physum-staging-180213-deployment",
+          "s3Key": "amplify-builds/DailyReminderNotification-466d6d355a5038693835-build.zip",
+          "userTable": "User-almjw3ikyrfq5fl4snigcywt6i-staging"
+        }
       }
     }
   }

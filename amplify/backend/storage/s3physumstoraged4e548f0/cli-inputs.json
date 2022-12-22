@@ -1,0 +1,10 @@
+{
+  "resourceName": "s3physumstoraged4e548f0",
+  "bucketName": "physum-storage-d4e548f0",
+  "policyUUID": "fb421a46",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "READ"
+  ]
+}

@@ -1,4 +1,8 @@
-export const groupByLevels = (topics: Topic[]): Topic[][] => {
+import { Topic } from "../models"
+import { TopicWithResult } from "../types/models"
+
+export const groupByLevels = (topics: Topic[]) => {
+    
     const levels: {[key: number]: any[]} = {}
 
     topics.forEach(topic => {
@@ -11,10 +15,10 @@ export const groupByLevels = (topics: Topic[]): Topic[][] => {
     return Object.values(levels)
 }
 
-export const getCurrentActiveLevel = (levels: Topic[][]) => {
+ export const getCurrentActiveLevel = (levels: TopicWithResult[][]) => {
     return levels.reduce(
         (acc: number, levelTopics) => 
-        levelTopics.every(topic => topic.progress >= 1) ?  acc + 1 :  acc,1 
+        levelTopics.every(topic => topic.isQuizPassed ) ?  acc + 1 :  acc,1 
     )
 
-}
+} 

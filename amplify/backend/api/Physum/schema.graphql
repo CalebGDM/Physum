@@ -1,0 +1,79 @@
+type User @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  sub: String!
+  expoNotificationToken: String
+}
+
+type Exersice @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  title: String!
+  url: String
+  topicID: ID! @index(name: "byTopic")
+}
+
+type Resource @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  title: String!
+  url: String
+  topicID: ID! @index(name: "byTopic")
+}
+
+type QuizResult @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  sub: String!
+  nofQuestions: Int!
+  nofCorretAnswers: Int!
+  precentage: Float!
+  failedQuestions: [String!]
+  attemps: Int!
+  quizID: ID! @index(name: "byQuiz")
+}
+
+type UserTopicProgress @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  sub: String!
+  completedResources: [String!]!
+  completedExercises: [String!]!
+  progress: Float!
+  isCompleted: Boolean
+  topicID: ID! @index(name: "byTopic")
+}
+
+type Lesson @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  lessonName: String!
+  color: String
+  imageUri: String
+  Topics: [Topic] @hasMany(indexName: "byLesson", fields: ["id"])
+  level: Int
+}
+
+type Quiz @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  QuizQuestions: [QuizQuestion] @hasMany(indexName: "byQuiz", fields: ["id"])
+  name: String!
+  QuizResults: [QuizResult] @hasMany(indexName: "byQuiz", fields: ["id"])
+}
+
+type QuizQuestion @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  question: String
+  image: String
+  choises: [String!]
+  correctAnswers: [String!]
+  quizID: ID! @index(name: "byQuiz")
+}
+
+type Topic @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  title: String!
+  icon: String
+  level: Int!
+  info: String!
+  Quiz: Quiz @hasOne
+  lessonID: ID! @index(name: "byLesson")
+  UserTopicProgresses: [UserTopicProgress] @hasMany(indexName: "byTopic", fields: ["id"])
+  Resources: [Resource] @hasMany(indexName: "byTopic", fields: ["id"])
+  Exersices: [Exersice] @hasMany(indexName: "byTopic", fields: ["id"])
+}
+ 

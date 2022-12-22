@@ -1,44 +1,58 @@
-import { View, FlatList, ScrollView} from 'react-native'
-import React from 'react'
-import { getTheme} from '../../components/Themed'
-import LessonPreview from '../../components/LessonPreview'
-import lessons from '../../../assets/data/lessons'
-import Colors from '../../constants/Colors'
-import SectionSign from '../../components/SectionSign'
-import FooterList from '../../components/FooterList'
-import UserLessons from '../../components/UserLessons'
-import userLessons from '../../../assets/data/userLessons'
-import { GStyles } from '../../constants/GeneralStyles'
-
-
-
-
+import { View, FlatList, ScrollView, ActivityIndicator } from "react-native";
+import React, { useEffect, useState } from "react";
+import { getTheme } from "../../components/Themed";
+import LessonPreview from "../../components/LessonPreview";
+import lessons from "../../../assets/data/lessons";
+import Colors from "../../constants/Colors";
+import SectionSign from "../../components/SectionSign";
+import FooterList from "../../components/FooterList";
+import UserLessons from "../../components/UserLessons";
+import userLessons from "../../../assets/data/userLessons";
+import { GStyles } from "../../constants/GeneralStyles";
+import { Auth, DataStore } from "aws-amplify";
+import { Lesson } from "../../models";
 
 const HomeScreen = () => {
-  const theme = getTheme()
-  const lessonsToRender = lessons.slice(0,4)
-  
+  const [lessonsToRender, setLessonsToRender] = useState<Lesson[]>([]);
+  //const [userLessons, setUserLessons] = useState<Lesson[]>()
 
-return (
-  <ScrollView style={[GStyles.screen, {backgroundColor: Colors[theme].background}]} showsVerticalScrollIndicator={false}>
+  useEffect(() => {
+    const fetchLessons = async () => {
+      const lessons = await DataStore.query(Lesson);
+      setLessonsToRender(lessons.slice(0, 4));
+    };
+    const fetchUserLessons = async () => {
+      const userData = Auth.currentAuthenticatedUser();
+    };
+    fetchLessons();
+  }, []);
 
-    {/* TopLessonPewviewList */}
-    <FlatList
-      data={lessonsToRender}
-      renderItem={({item}) => <LessonPreview lesson={item}/>}
-      horizontal={true}
-      showsHorizontalScrollIndicator={false}
-      ListFooterComponent={<FooterList/>}
-    />
+  return (
+    <ScrollView
+      style={[GStyles.screen, { backgroundColor: Colors.light.background }]}
+      showsVerticalScrollIndicator={false}
+    >
+      {/* TopLessonPewviewList */}
+      {lessonsToRender ? (
+        <FlatList
+          data={lessonsToRender}
+          renderItem={({ item }) => <LessonPreview lesson={item} />}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          ListFooterComponent={<FooterList />}
+        />
+      ) : (
+        <ActivityIndicator />
+      )}
 
-    {/* Tus Lecciones */}
-    <SectionSign label='Tus lecciones' screen={'UserLessons'}/>
-   
-    {
-      userLessons.map((item, index) => <UserLessons userLesson={item}/>)
-    }
-  </ScrollView>
-)
-}
+      {/* Tus Lecciones */}
+      <SectionSign label="Tus lecciones" screen={"UserLessons"} />
 
-export default HomeScreen
+      {userLessons.map((item, index) => (
+        <UserLessons userLesson={item} />
+      ))}
+    </ScrollView>
+  );
+};
+
+export default HomeScreen;
